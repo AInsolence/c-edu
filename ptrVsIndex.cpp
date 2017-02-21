@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cstdio>
-#include <time.h>
 
 using namespace std;
 
@@ -9,10 +8,12 @@ void bubleSort(int param[], int size);
 void ptrBubbleSort(int *ptrParam, int size);
 
 int main(int argc, char const *argv[]){
+
 	int x, i, size;
 
 	cout << "Please enter size of arrays from 0 to 1000: "<< endl;
 	 cin >> size;
+
 	cout << "Array for Bubble sort " << endl;
 	for (i = 0, x = size; x > 0; x--, i++){
 		array[i] = x;
@@ -28,12 +29,10 @@ int main(int argc, char const *argv[]){
 	cout << endl;
 
 	int *ptrarray_2 = &array_2[0];
-
 	ptrBubbleSort(ptrarray_2, size);
 
 	cout << "Array sorted by POINTERS " << endl;
 	for (int element = 0; element < size; element++) cout << array_2[element] << ' ';
-
 	cout << endl;
 
 	bubleSort(array, size);
