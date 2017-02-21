@@ -4,14 +4,14 @@
 
 using namespace std;
 
-int array[100], array_2[100];
+int array[1000], array_2[1000];
 void bubleSort(int param[], int size);
 void ptrBubbleSort(int *ptrParam, int size);
 
 int main(int argc, char const *argv[]){
 	int x, i, size;
 
-	cout << "Please enter size of arrays "<< endl;
+	cout << "Please enter size of arrays from 0 to 1000: "<< endl;
 	 cin >> size;
 	cout << "Array for Bubble sort " << endl;
 	for (i = 0, x = size; x > 0; x--, i++){
@@ -70,13 +70,14 @@ void bubleSort(int param[], int size){
 void ptrBubbleSort(int *ptrParam, int size){
 
 	int *end, element;
-	end = (ptrParam + size);
+	end = (ptrParam + size) - 1;
 	cout << "PTR  " << ptrParam << endl << "PTR*  " << *ptrParam << endl;
 	cout << "Last PTR " << end << endl;
+	cout << "Last number " << *(end - 1) << endl;
 
 	for (ptrParam; ptrParam < end; ptrParam++ ){
 
-		for (int *backward = (end - 1); backward >= ptrParam; backward--){
+		for (int *backward = end; backward >= ptrParam; backward--){
 
 			if (*(backward - 1) > *backward){
 
