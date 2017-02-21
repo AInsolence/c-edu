@@ -1,34 +1,49 @@
 #include <iostream>
 #include <cstdio>
+#include <time.h>
 
 using namespace std;
 
-int array[100];
-int bubleSort(int array[100]);
-int ptrBubbleSort(int array[100]);
+int array[100], array_2[100];
+void bubleSort(int param[], int size);
+void ptrBubbleSort(int *ptrParam, int size);
 
+int main(int argc, char const *argv[]){
+	int x, i, size;
 
-int main(int argc, char const *argv[])
-{
-	
-	int x;
-
-	for (int i = 0, x = 100; x > 0; x--, i++){
+	cout << "Please enter size of arrays "<< endl;
+	 cin >> size;
+	cout << "Array for Bubble sort " << endl;
+	for (i = 0, x = size; x > 0; x--, i++){
 		array[i] = x;
 		cout << array[i] << ' ';
 	}
+	cout << endl;
 
-	int bubleSort(int array[100]);
+	cout << "Array for Pointer Bubble sort " << endl;
+	for (i = 0, x = size; x > 0; x--, i++){
+		array_2[i] = x;
+		cout << array_2[i] << ' ';
+	}
+	cout << endl;
 
-	for (int y=0; y < 100; y++) cout << array[y] << ' ';
+	int *ptrarray_2 = &array_2[0];
+
+	ptrBubbleSort(ptrarray_2, size);
+
+	cout << "Array sorted by POINTERS " << endl;
+	for (int element = 0; element < size; element++) cout << array_2[element] << ' ';
+
+	cout << endl;
+
+	bubleSort(array, size);
 
 	return 0;
 }
 
-int bubleSort(int array[100]){
+void bubleSort(int param[], int size){
 
 	int forward, backward, element;
-	int size = 100;
 
 	//Bubblesort code
 
@@ -47,12 +62,29 @@ int bubleSort(int array[100]){
 
 	}
 
-	cout << "Sorted array " << endl;
+	cout << "Array sorted by index " << endl;
 	for (element = 0; element < size; element++) cout << array[element] << ' ';
-	return 0;
+	cout << endl;
 }
 
-int ptrBubbleSort(int array[100]){
+void ptrBubbleSort(int *ptrParam, int size){
 
-	return 0;
+	int *end, element;
+	end = (ptrParam + size);
+	cout << "PTR  " << ptrParam << endl << "PTR*  " << *ptrParam << endl;
+	cout << "Last PTR " << end << endl;
+
+	for (ptrParam; ptrParam < end; ptrParam++ ){
+
+		for (int *backward = (end - 1); backward >= ptrParam; backward--){
+
+			if (*(backward - 1) > *backward){
+
+				element = *(backward-1);
+				*(backward - 1) = *backward;
+				*backward = element;
+			}
+		}
+	}
+
 }
