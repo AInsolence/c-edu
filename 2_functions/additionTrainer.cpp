@@ -11,7 +11,7 @@ void addition();
 
 int main(int argc, char const *argv[])
 {
-	cout << "How much exercises youwant to do now?\n";
+	cout << "How much exercises you want to do now?\n";
 	 cin >> count;
 	int q = count;
 	right_ans = 0;
