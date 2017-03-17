@@ -67,7 +67,7 @@ char menu(){
 		cout << "(D)isplay item" << '\n';
 		cout << "(Q)uit" << '\n';
 		 cin >> choise;
-		}while(!strchr('emdq', tolower(choise))); // Check user input
+		}while(true); // Check user input
 
 	return tolower(choise);
 }
@@ -84,7 +84,8 @@ void enter()
 		cout << "Storage is full!\n";
 		return;
 	}
-	input(int i);
+
+	input(i);
 
 }
 
@@ -109,8 +110,7 @@ void modify()
 	char name[40];
 	 cin >> name;
 	register int i;
-	for (i = 0; i < SIZE; i++){
-		if (strcmp(name, storage_arr[i].item)) input (i);
+	for (i = 0; i < SIZE; i++) if (strcmp(name, storage_arr[i].item)) input (i);
 	cout << "Item is not found, please try again.\n";
 	return;
 }
