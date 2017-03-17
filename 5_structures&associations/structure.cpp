@@ -77,16 +77,15 @@ void enter()
 	register int i;
 
 	for (i = 0; i < SIZE; i ++){
-		if (!storage_arr[i].item) break;
+		if (!*storage_arr[i].item) break;
 	}
-
+	
 	if (i == SIZE) {
-		cout << "Storage is full!\n";
-		return;
-	}
-
+			cout << "Storage is full!\n";
+			return;
+		}
+		
 	input(i);
-
 }
 
 void input (int i)
