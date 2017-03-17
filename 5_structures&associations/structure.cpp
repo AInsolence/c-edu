@@ -67,7 +67,7 @@ char menu(){
 		cout << "(D)isplay item" << '\n';
 		cout << "(Q)uit" << '\n';
 		 cin >> choise;
-		}while(true); // Check user input
+		}while(!strchr("emdq", tolower(choise))); // Check user input
 
 	return tolower(choise);
 }
