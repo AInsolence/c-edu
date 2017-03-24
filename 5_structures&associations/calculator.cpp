@@ -2,28 +2,27 @@
 #include <cstdio>
 #include <cstring>
 #include <conio.h>
+#include <cctype>
 
 using namespace std;
 
 struct input{
-	long double a;
-	long double b;
+	long double numbers[10];
 	char sign;
 } user_input;
 
 char menu();
-void user_strTouser_input(char *user_str);
+void user_str_to_user_input(char *user_str);
 void calculator();
 
+// Calculator action functions
 void summ(input *user_input);
 void subtraction(input *user_input);
 void division(input *user_input);
 void multiplication(input *user_input);
 void remainder(input *user_input);
 void int_division(input *user_input);
-
-
-
+//-----------------------------------
 
 int main(int argc, char const *argv[])
 {
@@ -67,13 +66,11 @@ void calculator()
 	input * ptr_to_user_input;
 	ptr_to_user_input = &user_input;
 	ptr_to_user_str = user_str;
-
+	cout << "Enter your expression or enter 'q' to exit\n";
 	do{
-		
-		cout << "Enter your expression or enter 'q' to exit" << endl;
 		 gets(user_str);
 		
-		user_strTouser_input(ptr_to_user_str);
+		user_str_to_user_input(ptr_to_user_str);
 		sign = ptr_to_user_input -> sign;
 
 		switch (sign){
@@ -96,18 +93,31 @@ void calculator()
 				int_division(ptr_to_user_input);
 				break;
 			default :
-				cout << "\nSorry, this action does not supported.\n";
 				break;
 		}
 
 	} while(strcmp(user_str,"q"));
 }
 
-void user_strTouser_input(char *user_str)
+void user_str_to_user_input(char *user_str)
 {
-	char *ptr1;
-	*ptr1 = *user_str;
-	cout << ptr1;
+	char *ptrtemp;
+	char token[100];
+	//Clear numbers array to prepare for new data
+
+	while (*user_str){
+		ptrtemp = token;
+		while (isdigit(*user_str)){
+			*ptrtemp = *user_str;
+			user_str++;
+			ptrtemp++;
+		}
+		if (*user_str) user_str++;
+		*ptrtemp = '\0';
+		cout << token << '\n';
+		
+	}
+
 }
 
 void summ(input *user_input)
