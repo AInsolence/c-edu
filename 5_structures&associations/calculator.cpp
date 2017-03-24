@@ -1,31 +1,41 @@
 #include <iostream>
+#include <cstdio>
 #include <cstring>
 #include <conio.h>
 
 using namespace std;
 
-long double a, b;
+struct input{
+	long double a;
+	long double b;
+	char sign;
+} user_input;
 
-void start();
-char listner();
-long double calculate (long double a, long double b, char sign);
-void reset();
 char menu();
+void user_strTouser_input(char *user_str);
+void calculator();
+
+void summ(input *user_input);
+void subtraction(input *user_input);
+void division(input *user_input);
+void multiplication(input *user_input);
+void remainder(input *user_input);
+void int_division(input *user_input);
+
+
 
 
 int main(int argc, char const *argv[])
 {
 	char choise;
+	user_input.sign = '\0';
 	for (;;){
 
 		choise = menu();
 
 		switch (choise){
 			case 's':
-				start();
-				break;
-			case 'r':
-				reset();
+				calculator();
 				break;
 			case 'q':
 				return 0;
@@ -44,32 +54,83 @@ char menu(){
 		cout << "(S)tart calculate" << '\n';
 		cout << "(Q)uit" << '\n';
 		 cin >> choise;
-		}while(!strchr("emdq", tolower(choise))); // Check user input
+		}while(!strchr("sq", tolower(choise))); // Check user input
 
 	return tolower(choise);
 }
 
-void start()
+void calculator()
 {
-	char action;
-	for (;;){
-		char action;
-		action = listner();
-		calculate (a, b, action);
-	}
+	char sign;
+	char user_str[100];
+	char * ptr_to_user_str;
+	input * ptr_to_user_input;
+	ptr_to_user_input = &user_input;
+	ptr_to_user_str = user_str;
+
+	do{
+		
+		cout << "Enter your expression or enter 'q' to exit" << endl;
+		 gets(user_str);
+		
+		user_strTouser_input(ptr_to_user_str);
+		sign = ptr_to_user_input -> sign;
+
+		switch (sign){
+			case '+':
+				summ(ptr_to_user_input);
+				break;
+			case '-':
+				subtraction(ptr_to_user_input);
+				break;
+			case '/':
+				division(ptr_to_user_input);
+				break;
+			case '*':
+				multiplication(ptr_to_user_input);
+				break;
+			case '%':
+				remainder(ptr_to_user_input);
+				break;
+			case '^':
+				int_division(ptr_to_user_input);
+				break;
+			default :
+				cout << "\nSorry, this action does not supported.\n";
+				break;
+		}
+
+	} while(strcmp(user_str,"q"));
 }
 
-void listner()
+void user_strTouser_input(char *user_str)
 {
-	
+	char *ptr1;
+	*ptr1 = *user_str;
+	cout << ptr1;
 }
 
-void reset()
+void summ(input *user_input)
 {
-	
+	cout << "Func" << endl;
 }
-
-long double calculate (long double a, long double b, char sign)
+void subtraction(input *user_input)
 {
-	
+	cout << "Func" << endl;
+}
+void division(input *user_input)
+{
+	cout << "Func" << endl;
+}
+void multiplication(input *user_input)
+{
+	cout << "Func" << endl;
+}
+void remainder(input *user_input)
+{
+	cout << "Func" << endl;
+}
+void int_division(input *user_input)
+{
+	cout << "Func" << endl;
 }
