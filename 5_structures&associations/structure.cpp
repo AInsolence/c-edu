@@ -5,7 +5,7 @@
 
 using namespace std;
 
-char menu();
+int menu();
 void init();
 void enter();
 void input(int i);
@@ -57,7 +57,7 @@ void init()
 	for (i = 0; i < SIZE; i++) *storage_arr[i].item = '\0'; // *array - create ptr for first element
 }
 
-char menu(){
+int menu(){
 
 	char choise;
 
@@ -81,9 +81,9 @@ void enter()
 	}
 	
 	if (i == SIZE) {
-			cout << "Storage is full!\n";
-			return;
-		}
+		cout << "Storage is full!\n";
+		return;
+	}
 		
 	input(i);
 }
