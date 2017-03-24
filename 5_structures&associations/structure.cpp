@@ -24,15 +24,12 @@ struct storage{
 
 int main(int argc, char const *argv[])
 {
-	/* code */
 	char choise;
 
 	init();
 
-	choise = menu();
-
 	for (;;){
-		char choise;
+
 		choise = menu();
 
 		switch (choise){
@@ -43,7 +40,8 @@ int main(int argc, char const *argv[])
 				modify();
 				break;
 			case 'd':
-				display;
+				display();
+				break;
 			case 'q':
 				return 0;
 		}
@@ -62,6 +60,7 @@ int menu(){
 	char choise;
 
 	do {
+		cout << '\n';
 		cout << "(E)nter item" << '\n';
 		cout << "(M)odify item" << '\n';
 		cout << "(D)isplay item" << '\n';
@@ -105,11 +104,38 @@ void input (int i)
 
 void modify()
 {
-	cout << "Enter the name of the item which you want to modify: \n";
-	char name[40];
-	 cin >> name;
 	register int i;
-	for (i = 0; i < SIZE; i++) if (strcmp(name, storage_arr[i].item)) input (i);
-	cout << "Item is not found, please try again.\n";
-	return;
+	char name[40];
+	cout << "Enter the name of the item which you want to modify: \n";
+	 cin >> name;
+	
+	for (i = 0; i < SIZE; i++){
+		if (!strcmp(name, storage_arr[i].item)) break;
+	}
+
+	if (i == SIZE){
+		cout << "Item is not found, please try again.\n";
+		return;
+	}
+	cout << "Enter new information:\n";
+	input (i);
+}
+
+void display()
+{
+	int i;
+	for (i = 0; i < SIZE; i++){
+		if (*storage_arr[i].item){
+			cout << "Item name: \n";
+			cout << storage_arr[i].item << '\n';
+			cout << "Item cost: \n";
+			cout << storage_arr[i].cost << '\n';
+			cout << "Item retail: \n";
+			cout << storage_arr[i].retail << '\n';
+			cout << "Item available on hand: \n";
+			cout << storage_arr[i].on_hand << '\n';
+			cout << "Lead time: \n";
+			cout << storage_arr[i].lead_time << '\n';
+		}
+	}
 }
