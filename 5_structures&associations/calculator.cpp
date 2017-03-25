@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <conio.h>
 #include <cctype>
@@ -14,6 +15,7 @@ struct input{
 char menu();
 void user_str_to_user_input(char *user_str);
 void calculator();
+int help();
 
 // Calculator action functions
 void summ(input *user_input);
@@ -27,7 +29,6 @@ void int_division(input *user_input);
 int main(int argc, char const *argv[])
 {
 	char choise;
-	user_input.sign = '\0';
 	for (;;){
 
 		choise = menu();
@@ -35,6 +36,9 @@ int main(int argc, char const *argv[])
 		switch (choise){
 			case 's':
 				calculator();
+				break;
+			case 'h':
+				help();
 				break;
 			case 'q':
 				return 0;
@@ -51,11 +55,22 @@ char menu(){
 	do {
 		cout << '\n';
 		cout << "(S)tart calculate" << '\n';
+		cout << "(H)elp\n";
 		cout << "(Q)uit" << '\n';
 		 cin >> choise;
-		}while(!strchr("sq", tolower(choise))); // Check user input
+		}while(!strchr("shq", tolower(choise))); // Check user input
 
 	return tolower(choise);
+}
+
+int help()
+{
+	cout << "\nEnter your expression as:\n2+2 and press 'enter'\n\n";
+	cout << "Calculator commands:\n\n'+' -> summ\n'-' -> substraction\n\
+'/' -> division\n'*' -> multiplication\n'^' -> \
+integer division(for integer only)\n'?' -> \
+remainder of division(for integer only)\n";
+	return 0;
 }
 
 void calculator()
@@ -86,7 +101,7 @@ void calculator()
 			case '*':
 				multiplication(ptr_to_user_input);
 				break;
-			case '%':
+			case '?':
 				remainder(ptr_to_user_input);
 				break;
 			case '^':
@@ -95,6 +110,8 @@ void calculator()
 			default :
 				break;
 		}
+		user_input.sign = '\0';
+		
 
 	} while(strcmp(user_str,"q"));
 }
@@ -103,44 +120,70 @@ void user_str_to_user_input(char *user_str)
 {
 	char *ptrtemp;
 	char token[100];
-	//Clear numbers array to prepare for new data
+	int count_nums = 0;
 
 	while (*user_str){
 		ptrtemp = token;
-		while (isdigit(*user_str)){
+		while (isdigit(*user_str) || *user_str == '.'){
 			*ptrtemp = *user_str;
 			user_str++;
 			ptrtemp++;
 		}
+		if (strchr("+-/*?^", *user_str) && !user_input.sign) user_input.sign = *user_str;
 		if (*user_str) user_str++;
 		*ptrtemp = '\0';
-		cout << token << '\n';
-		
+		user_input.numbers[count_nums] = atof(token);
+		count_nums++;
 	}
+	for (int i = 0; i <= count_nums; i++){
+		cout << user_input.numbers[i] << " ";
+	}
+
+	for (int i = 0; i <= count_nums; i++){
+		cout << user_input.sign << " \n";
+	}
+
 
 }
 
 void summ(input *user_input)
 {
-	cout << "Func" << endl;
+	system("cls");
+	cout << user_input -> numbers[0] << "+" << user_input -> numbers[1]\
+	 << "=" << user_input -> numbers[0] + user_input -> numbers[1] << '\n';
 }
+
 void subtraction(input *user_input)
 {
-	cout << "Func" << endl;
+	system("cls");
+	cout << user_input -> numbers[0] << "-" << user_input -> numbers[1]\
+	 << "=" << user_input -> numbers[0] - user_input -> numbers[1] << '\n';
 }
+
 void division(input *user_input)
 {
-	cout << "Func" << endl;
+	system("cls");
+	cout << user_input -> numbers[0] << "/" << user_input -> numbers[1]\
+	 << "=" << user_input -> numbers[0] / user_input -> numbers[1] << '\n';
 }
+
 void multiplication(input *user_input)
 {
-	cout << "Func" << endl;
+	system("cls");
+	cout << user_input -> numbers[0] << "*" << user_input -> numbers[1]\
+	 << "=" << user_input -> numbers[0] * user_input -> numbers[1] << '\n';
 }
+
 void remainder(input *user_input)
 {
-	cout << "Func" << endl;
+	system("cls");
+	cout << user_input -> numbers[0] << "?" << user_input -> numbers[1]\
+	 << "=" << (int)user_input -> numbers[0] % (int)user_input -> numbers[1] << '\n';
 }
+
 void int_division(input *user_input)
 {
-	cout << "Func" << endl;
+	system("cls");
+	cout << user_input -> numbers[0] << "^" << user_input -> numbers[1]\
+	 << "=" << (int)user_input -> numbers[0] / (int)user_input -> numbers[1] << '\n';
 }
