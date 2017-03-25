@@ -16,7 +16,7 @@ char menu();
 void user_str_to_user_input(char *user_str);
 void calculator();
 int help();
-
+long double result;
 // Calculator action functions
 void summ(input *user_input);
 void subtraction(input *user_input);
@@ -24,6 +24,7 @@ void division(input *user_input);
 void multiplication(input *user_input);
 void remainder(input *user_input);
 void int_division(input *user_input);
+void clear();
 //-----------------------------------
 
 int main(int argc, char const *argv[])
@@ -65,11 +66,13 @@ char menu(){
 
 int help()
 {
+	system("cls");
 	cout << "\nEnter your expression as:\n2+2 and press 'enter'\n\n";
 	cout << "Calculator commands:\n\n'+' -> summ\n'-' -> substraction\n\
 '/' -> division\n'*' -> multiplication\n'^' -> \
 integer division(for integer only)\n'?' -> \
 remainder of division(for integer only)\n";
+	cout << "\nPress 'q' to exit to main menu.\n\n";
 	return 0;
 }
 
@@ -107,6 +110,10 @@ void calculator()
 			case '^':
 				int_division(ptr_to_user_input);
 				break;
+			case 'c':
+				clear();
+				break;
+
 			default :
 				break;
 		}
@@ -132,58 +139,71 @@ void user_str_to_user_input(char *user_str)
 		if (strchr("+-/*?^", *user_str) && !user_input.sign) user_input.sign = *user_str;
 		if (*user_str) user_str++;
 		*ptrtemp = '\0';
-		user_input.numbers[count_nums] = atof(token);
+		if (user_input.numbers[0] != 0){
+			if (count_nums == 0){
+				user_input.numbers[count_nums] = result;
+				cout << result;
+			}else user_input.numbers[count_nums] = atof(token);
+		}else user_input.numbers[count_nums] = atof(token);		
 		count_nums++;
 	}
-	for (int i = 0; i <= count_nums; i++){
-		cout << user_input.numbers[i] << " ";
-	}
 
-	for (int i = 0; i <= count_nums; i++){
-		cout << user_input.sign << " \n";
-	}
+}
 
-
+void clear(){
+		user_input.numbers[0] = 0;
 }
 
 void summ(input *user_input)
 {
 	system("cls");
+	result =  user_input -> numbers[0] + user_input -> numbers[1];
 	cout << user_input -> numbers[0] << "+" << user_input -> numbers[1]\
-	 << "=" << user_input -> numbers[0] + user_input -> numbers[1] << '\n';
+	 << "=" << result << '\n' << endl;
+	cout << result;
 }
 
 void subtraction(input *user_input)
 {
 	system("cls");
+	result =  user_input -> numbers[0] - user_input -> numbers[1];
 	cout << user_input -> numbers[0] << "-" << user_input -> numbers[1]\
-	 << "=" << user_input -> numbers[0] - user_input -> numbers[1] << '\n';
+	 << "=" << result << '\n' << endl;
+	cout << result;
 }
 
 void division(input *user_input)
 {
 	system("cls");
+	result =  user_input -> numbers[0] / user_input -> numbers[1];
 	cout << user_input -> numbers[0] << "/" << user_input -> numbers[1]\
-	 << "=" << user_input -> numbers[0] / user_input -> numbers[1] << '\n';
+	 << "=" << result << '\n' << endl;
+	cout << result;
 }
 
 void multiplication(input *user_input)
 {
 	system("cls");
+	result =  user_input -> numbers[0] * user_input -> numbers[1];
 	cout << user_input -> numbers[0] << "*" << user_input -> numbers[1]\
-	 << "=" << user_input -> numbers[0] * user_input -> numbers[1] << '\n';
+	 << "=" << result << '\n' << endl;
+	cout << result;
 }
 
 void remainder(input *user_input)
 {
 	system("cls");
+	result =  (int)user_input -> numbers[0] % (int)user_input -> numbers[1];
 	cout << user_input -> numbers[0] << "?" << user_input -> numbers[1]\
-	 << "=" << (int)user_input -> numbers[0] % (int)user_input -> numbers[1] << '\n';
+	 << "=" << result << '\n' << endl;
+	cout << result;
 }
 
 void int_division(input *user_input)
 {
 	system("cls");
+	result =  (int)user_input -> numbers[0] / (int)user_input -> numbers[1];
 	cout << user_input -> numbers[0] << "^" << user_input -> numbers[1]\
-	 << "=" << (int)user_input -> numbers[0] / (int)user_input -> numbers[1] << '\n';
+	 << "=" << result << '\n' << endl;
+	cout << result;
 }
