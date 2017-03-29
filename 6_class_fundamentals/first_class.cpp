@@ -9,23 +9,33 @@ class queue
 public:
 
 	int b;
-	void init(int i);
+	queue(int id);
+	~queue();
 	int geta();
 	void reset();
 
 private:
 	
 	int a;
+	int sloc, rloc;
+	int who;
 
-} my_queue;
+};
 
 // We separate logic from data
-void queue::init(int i)
+queue::queue(int id)
 {
-	a = i;
-	b = i*i;
+	sloc = rloc = 0;
+	who = id;
+	a = id;
 	return;
 }
+
+queue::~queue()
+{
+	return;
+}
+
 
 int queue::geta()
 {
@@ -42,8 +52,11 @@ void queue::reset()
 
 
 int main(int argc, char const *argv[])
-{
-	my_queue.init(5);
+{	
+	
+	queue my_queue(1);
+	queue my_queue2(2);
+	my_queue.b = 10;
 	cout << "Data:\n" << "a = " << my_queue.geta() << " b = " << my_queue.b << endl;
 	my_queue.reset();
 	cout << "After reset:\n" << "a = " << my_queue.geta() << " b = " << my_queue.b << endl;
