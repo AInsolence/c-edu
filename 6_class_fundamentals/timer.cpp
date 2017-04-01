@@ -47,10 +47,26 @@ void timer :: run()
 
 int main(int argc, char const *argv[])
 {
-	timer a(3), b("5"), c(0,7);
+	
+	
+	timer a(3), b("3"), c(0,3);
 	a.run();
 	b.run();
 	c.run();
+	
+	// Examples of dynamic initialization
+	int seconds;
+	cout << "\nNow enter please numbers of seconds to timer: ";
+	 cin >> seconds;
+	timer d(seconds);
+	d.run();
+
+	char secundo[10];
+	cout << "\nNow enter please numbers of seconds in char to timer: ";
+	 cin >> secundo;
+	d.run();
+
 	cout << "\nProgramm is done!";
+
 	return 0;
 }
