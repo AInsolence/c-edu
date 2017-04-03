@@ -174,6 +174,5 @@ int main(int argc, char const *argv[])
 	cout << (a > b) << endl;
 	cout << (a < c) << endl;
 
-
 	return 0;
 }
