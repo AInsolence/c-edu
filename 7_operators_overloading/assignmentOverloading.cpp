@@ -22,9 +22,11 @@ public:
 
 	}
 
+	sample operator = (const sample &object);
 	void show_string()
 	{
-		cout << s << endl;
+		if (s) cout << s << endl;
+		else cout << "NO s HERE";
 	}
 
 	void set(const char *str);
@@ -42,6 +44,16 @@ void sample :: set(const char *str)
 	strcpy(s, str);
 }
 
+sample sample :: operator = (const sample &object)
+{
+	if (strlen(s) < strlen(object.s)){
+		delete [] s;
+		s = new char[strlen(object.s) + 1];
+	}
+	strcpy(s, object.s);
+	return *this;
+}
+
 sample input()
 {
 	sample str;
@@ -55,7 +67,6 @@ sample input()
 int main(int argc, char const *argv[])
 {
 	sample a;
-	a.show_string();
 	a = input();
 	a.show_string();
 
