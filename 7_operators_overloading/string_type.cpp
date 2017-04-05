@@ -11,6 +11,7 @@ class string_type
 	char string [SIZE];
 public:
 	string_type();
+	string_type(const char *str);
 	~string_type();
 	void show();
 	int find(char *str);
@@ -37,6 +38,12 @@ public:
 string_type :: ~string_type(){return;}
 
 string_type :: string_type(){return;}
+
+string_type :: string_type(const char *str)
+{
+	strcpy(string, str);
+	return;
+}
 
 void string_type :: show()
 {
@@ -126,6 +133,9 @@ string_type string_type :: operator-(const char *str)
 int main(int argc, char const *argv[])
 {
 	string_type a, b, c, d;
+	// Constructor overloading
+	string_type e = "String e!";
+	e.show();
 	// Overloading "="
 	a = "This is ";
 	// Overloading "+" for this + const *char
