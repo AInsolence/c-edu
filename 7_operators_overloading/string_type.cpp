@@ -115,7 +115,7 @@ char & string_type :: operator[](int index)
 {
 	char * str;
 	str = string;
-	if (index < strlen(string)){
+	if ((index > -1) && (index < strlen(string))){
 		return str[index];
 	}
 	else{
