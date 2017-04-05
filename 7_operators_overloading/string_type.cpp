@@ -29,7 +29,7 @@ public:
 	string_type operator-(string_type object2){};
 	string_type operator-(const char *str);
 
-	char operator[](int index);
+	char & operator[](int index);
 
 
 };
@@ -104,7 +104,7 @@ string_type operator+(const char *str, string_type object)
 	return result;
 }
 
-char string_type :: operator[](int index)
+char & string_type :: operator[](int index)
 {
 	char * str;
 	str = string;
