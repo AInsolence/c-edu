@@ -155,7 +155,7 @@ int main(int argc, char const *argv[])
 	String_type e = "String e!";
 	e.show();
 	// Overloading "="
-	a = "This is ";
+	a = "This is regulus rex ";
 	// Overloading "+" for this + const *char
 	a = a + "A!";
 	a.show();
@@ -177,7 +177,7 @@ int main(int argc, char const *argv[])
 	d.show();
 	a.show();
 	// find method
-	find_result = a.find("A!");
+	find_result = a.find("rex");
 	cout << "Find function result is : " << find_result << endl;
 	cout << c[30] << endl;
 	return 0;
