@@ -6,116 +6,111 @@ using namespace std;
 
 const int SIZE = 200;
 
-class string_type
+class String_type
 {
-	char string [SIZE];
+	char string_ [SIZE];
 public:
-	string_type();
-	string_type(const char *str);
-	~string_type();
+	String_type();
+	String_type(const char *str);
+	~String_type();
 	void show();
-	int find(char *str);
+	int find(const char *str);
 
-	string_type operator=(const char *str);
+	String_type operator=(const char *str);
 
 	/* Use friends functions for overloading '+',
 	because we do not want any changes in source objects */
-	friend string_type operator+(string_type object, string_type object2);
-	friend string_type operator+(string_type object, const char *str);
-	friend string_type operator+(const char *str, string_type object);
+	friend String_type operator+(String_type object, String_type object2);
+	friend String_type operator+(String_type object, const char *str);
+	friend String_type operator+(const char *str, String_type object);
 
-	friend string_type operator*(string_type object, int number);
-	friend string_type operator*(int number, string_type object);
+	friend String_type operator*(String_type object, int number);
+	friend String_type operator*(int number, String_type object);
 
-	string_type operator-(string_type object2){};
-	string_type operator-(const char *str);
+	String_type operator-(String_type object2){};
+	String_type operator-(const char *str);
 
 	char & operator[](int index);
 
 
 };
 
-string_type :: ~string_type(){return;}
+String_type :: ~String_type(){return;}
 
-string_type :: string_type(){return;}
+String_type :: String_type(){return;}
 
-string_type :: string_type(const char *str)
+String_type :: String_type(const char *str)
 {
-	strcpy(string, str);
+	strcpy(string_, str);
 	return;
 }
 
-void string_type :: show()
+void String_type :: show()
 {
-	cout << string << endl;
+	cout << string_ << endl;
 }
 
-int string_type :: find(char *str)
+String_type String_type :: operator=(const char *str)
 {
-	return 0;
+	strcpy(string_, str);
 }
 
-string_type string_type :: operator=(const char *str)
+String_type operator*(String_type object, int number)
 {
-	strcpy(string, str);
-}
-
-string_type operator*(string_type object, int number)
-{
-	string_type temp;
-	strcpy(temp.string, object.string);
+	String_type temp;
+	strcpy(temp.string_, object.string_);
 	if (number == 0){
-		strcpy(object.string, '\0');
+		strcpy(object.string_, '\0');
 	}
 	else{
 		for (int i=1; i < number; i++){
-			strcat(object.string, temp.string);
+			strcat(object.string_, temp.string_);
 		}
 	}
 	return object;
 }
 
-string_type operator*(int number, string_type object)
+String_type operator*(int number, String_type object)
 {
-	string_type temp;
-	strcpy(temp.string, object.string);
+	String_type temp;
+	strcpy(temp.string_, object.string_);
 	if (number == 0){
-		strcpy(object.string, '\0');
+		strcpy(object.string_, '\0');
 	}
 	else{
 		for (int i=1; i < number; i++){
-			strcat(object.string, temp.string);
+			strcat(object.string_, temp.string_);
 		}
 	}
 	return object;
 }
 
-string_type operator+(string_type object, string_type object2)
+String_type operator+(String_type object, String_type object2)
 {
-	string_type result;
-	strcpy(result.string, strcat(object.string, object2.string));
+	String_type result;
+	strcpy(result.string_, strcat(object.string_, object2.string_));
 	return result;
 }
 
-string_type operator+(string_type object, const char *str)
+String_type operator+(String_type object, const char *str)
 {
-	string_type result;
-	strcpy(result.string, (strcat(object.string, str)));
+	String_type result;
+	strcpy(result.string_, (strcat(object.string_, str)));
 	return result;
 }
 
-string_type operator+(const char *str, string_type object)
+String_type operator+(const char *str, String_type object)
 {
-	string_type result;
-	strcat(strcpy(result.string, str), object.string);
+	String_type result;
+	strcat(strcpy(result.string_, str), object.string_);
 	return result;
 }
 
-char & string_type :: operator[](int index)
+char & String_type :: operator[](int index)
 {
 	char * str;
-	str = string;
-	if ((index > -1) && (index < strlen(string))){
+	str = string_;
+	if ((index > -1) && (index < strlen(string_))){
 		return str[index];
 	}
 	else{
@@ -124,22 +119,45 @@ char & string_type :: operator[](int index)
 	}
 }
 
-string_type string_type :: operator-(const char *str)
+String_type String_type :: operator-(const char *str)
 {
 
 }
 
+int String_type :: find(const char *str)
+{
+	char *s, *f;
+	char temp [SIZE];
+	strcpy(temp, str);
+	s = string_;
+	f = temp;
+	int index = -1;
+	for (register int i = 0; s[i]; i++){
+		if (f[0] == s[i]){
+			index = i;
+			for (register int j = 0; f[j]; j++, i++){
+				if (f[j] != s[i]){ 
+					index = -1;
+				 	break; 
+				}
+			}
+			if (index != -1) return index;
+		}
+	}
+	return index;
+}
 
 int main(int argc, char const *argv[])
 {
-	string_type a, b, c, d;
+	String_type a, b, c, d;
+	int find_result;
 	// Constructor overloading
-	string_type e = "String e!";
+	String_type e = "String e!";
 	e.show();
 	// Overloading "="
 	a = "This is ";
 	// Overloading "+" for this + const *char
-	a = a + " A!";
+	a = a + "A!";
 	a.show();
 	// Overloading "+" for this + object2
 	b = "New info from object B";
@@ -153,11 +171,14 @@ int main(int argc, char const *argv[])
 	c.show();
 	cout << c[0] << endl;
 	cout << c[3] << endl;
-	cout << c[13] << endl;
+	cout << c[5] << endl;
 	//Overloading "*"
-	d = a * 3;
+	d = a * 2;
 	d.show();
 	a.show();
+	// find method
+	find_result = a.find("A!");
+	cout << "Find function result is : " << find_result << endl;
 	cout << c[30] << endl;
 	return 0;
 }
