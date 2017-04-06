@@ -5,8 +5,8 @@
 
 using namespace std;
 
-const int WIDTH = 100;
-const int HEIGHT = 25;
+const int WIDTH = 10;
+const int HEIGHT = 10;
 
 
 class Level
@@ -22,7 +22,7 @@ public:
 };
 
 Level :: Level(){
-	int i, j;
+	register int i, j;
 	for (j = 0; j<HEIGHT; j++){
 		for (i = 0; i<WIDTH; i++){
 			if ((i == 0 || i == (WIDTH - 1)) || ((j == 0) || (j == HEIGHT - 1))) field[i][j] = ' ';
@@ -82,6 +82,7 @@ void Snake :: move()
 		
 		int seconds = 1;
 		x_pos += 1;
+		if (x_pos == WIDTH) x_pos = 0;
 		this -> position();
 		this -> blit();
 		clock_t start;
