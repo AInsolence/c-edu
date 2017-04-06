@@ -1,23 +1,102 @@
 #include <iostream>
 #include <cstdlib>
 #include <conio.h>
+#include <time.h>
 
 using namespace std;
 
-int main(int argc, char const *argv[])
+const int WIDTH = 100;
+const int HEIGHT = 25;
+
+
+class Level
+{
+	
+public:
+	char field[WIDTH][HEIGHT];
+
+	Level();
+	~Level(){return;};
+
+	void blit();
+};
+
+Level :: Level(){
+	int i, j;
+	for (j = 0; j<HEIGHT; j++){
+		for (i = 0; i<WIDTH; i++){
+			if ((i == 0 || i == (WIDTH - 1)) || ((j == 0) || (j == HEIGHT - 1))) field[i][j] = ' ';
+			else field[i][j] = ' ';
+		}
+	}
+}
+
+void Level :: blit()
+{
+	register int i, j;
+	for (j = 0; j<HEIGHT; j++){
+		for (i = 0; i<WIDTH; i++){
+			cout << field[i][j];
+		}
+		cout << '\n';
+	}
+}
+
+class Snake : public Level
+{
+public:
+	int x_pos, y_pos;
+	int size;
+	enum direction{right, left, up, down};
+	int speed;
+	enum state{live, die};
+
+	Snake();
+	~Snake(){};
+	void position();
+	void move();
+};
+
+Snake :: Snake()
+{
+	x_pos = 5;
+	y_pos = 5;
+	speed = 1;
+	size = 1;
+}
+
+void Snake :: position()
+{
+	register int i, j;
+	for (j = 0; j<HEIGHT; j++){
+		for (i = 0; i<WIDTH; i++){
+			if ((i == x_pos) && (j == y_pos)) field[i][j] = '8';
+			else field[i][j] = ' ';
+		}
+	}
+}
+
+void Snake :: move()
 {
 	for(;;){
-		char symbol;
-		symbol = getch();
-		switch(symbol){
-			case 'q':
-				cout << "q";
-				break;
-			case 'w':
-				cout << "w";
-				break;
-		}
-	};
+		
+		int seconds = 1;
+		x_pos += 1;
+		this -> position();
+		this -> blit();
+		clock_t start;
+		start = clock();
+		while (clock()/CLOCKS_PER_SEC - start/CLOCKS_PER_SEC < seconds);
+		system("cls");
+	}
+}
 
+int main(int argc, char const *argv[])
+{
+	Level one;
+	Snake hero;
+	hero.position();
+	hero.blit();
+	hero.move();
 	return 0;
 }
