@@ -5,33 +5,89 @@
 
 using namespace std;
 
-const int WIDTH = 10;
-const int HEIGHT = 10;
+const int WIDTH = 20;
+const int HEIGHT = 15;
+int size = 2;
+
+enum state{live, die};
+state cur_state;
+enum direction{s_right, s_left, s_up, s_down};
+direction cur_direction = s_right;
 
 
-class Level
+class Snake
 {
-	
 public:
+	Snake();
+	~Snake(){};
+
 	char field[WIDTH][HEIGHT];
-
-	Level();
-	~Level(){return;};
-
-	void blit();
+	int coordinates[100][2];
+	int speed;
+	
+	void def_snake();
+	void def_frame();
+	void display_all();
+	void change_size();
+	void move();
 };
 
-Level :: Level(){
+Snake :: Snake()
+{
 	register int i, j;
 	for (j = 0; j<HEIGHT; j++){
 		for (i = 0; i<WIDTH; i++){
-			if ((i == 0 || i == (WIDTH - 1)) || ((j == 0) || (j == HEIGHT - 1))) field[i][j] = ' ';
-			else field[i][j] = ' ';
+			field[i][j] = ' ';
+		}
+	}
+	coordinates[0][0] = 5;
+	coordinates[0][1] = 5;
+	speed = 2;
+}
+
+void Snake :: def_frame()
+{
+	int i, j;
+	for (j = 0; j<HEIGHT; j++){
+					for (i = 0; i<WIDTH; i++){
+						if ((i == 0 || i == (WIDTH - 1)) || ((j == 0) || (j == HEIGHT - 1))) field[i][j] = '#';
+						} 
+				}
+}
+
+
+void Snake :: def_snake()
+{
+	register int i, j;
+
+	for (j = 0; j<HEIGHT; j++){
+		for (i = 0; i<WIDTH; i++){
+			int x,y;
+			for (x = 0, y = 0; x < size, y < size; x++, y++){
+				if ((i == coordinates[x][0]) && (j == coordinates[y][1])){
+								field[i][j] = '0';
+								switch(cur_direction){
+										case s_right:
+											field[i-size][j] = ' ';
+											break;
+										case s_left:
+											field[i+size][j] = ' ';
+											break;
+										case s_up:
+											field[i][j+size] = ' ';
+											break;
+										case s_down:
+											field[i][j-size] = ' ';
+											break;
+								}
+				}
+			}
+			
 		}
 	}
 }
 
-void Level :: blit()
+void Snake :: display_all()
 {
 	register int i, j;
 	for (j = 0; j<HEIGHT; j++){
@@ -42,62 +98,108 @@ void Level :: blit()
 	}
 }
 
-class Snake : public Level
+void Snake :: change_size()
 {
-public:
-	int x_pos, y_pos;
-	int size;
-	enum direction{right, left, up, down};
-	int speed;
-	enum state{live, die};
-
-	Snake();
-	~Snake(){};
-	void position();
-	void move();
-};
-
-Snake :: Snake()
-{
-	x_pos = 5;
-	y_pos = 5;
-	speed = 1;
-	size = 1;
-}
-
-void Snake :: position()
-{
-	register int i, j;
-	for (j = 0; j<HEIGHT; j++){
-		for (i = 0; i<WIDTH; i++){
-			if ((i == x_pos) && (j == y_pos)) field[i][j] = '8';
-			else field[i][j] = ' ';
-		}
+	size ++;
+	switch(cur_direction){
+			case s_right:
+				coordinates[size-1][0] = coordinates[size-2][0];
+				break;
+			case s_left:
+				coordinates[size-1][0] = coordinates[size-2][0];
+				break;
+			case s_up:
+				coordinates[size-1][1] = coordinates[size-2][1];
+				break;
+			case s_down:
+				coordinates[size-1][2] = coordinates[size-2][1];
+				break;
 	}
 }
 
 void Snake :: move()
-{
-	for(;;){
-		
-		int seconds = 1;
-		x_pos += 1;
-		if (x_pos == WIDTH) x_pos = 0;
-		this -> position();
-		this -> blit();
+{		
+		float delay;
+		delay = 3/speed;
+
+		switch (cur_direction){
+			case s_right:
+				coordinates[0][0] += 1;
+				if (coordinates[0][0] == (WIDTH)) coordinates[0][0] = 1;
+				break;
+			case s_left:
+				coordinates[0][0] -= 1;
+				if (coordinates[0][0] == -1) coordinates[0][0] = WIDTH - 2;
+				break;
+			case s_up:
+				coordinates[0][1] -= 1;
+				if (coordinates[0][1] == -1) coordinates[0][1] = HEIGHT - 2;
+				break;
+			case s_down:
+				coordinates[0][1] += 1;
+				if (coordinates[0][1] == (HEIGHT)) coordinates[0][1] = 1;
+				break;
+		}
+		system("cls");
+		this -> def_snake();
+		this -> def_frame();
+		this -> display_all();
 		clock_t start;
 		start = clock();
-		while (clock()/CLOCKS_PER_SEC - start/CLOCKS_PER_SEC < seconds);
-		system("cls");
-	}
+		while (clock()/CLOCKS_PER_SEC - start/CLOCKS_PER_SEC < delay);
+		
 }
+
+class Game
+{
+public:
+	Game(){};
+	~Game(){};
+	void play(Snake &object);
+};
+
+void Game :: play(Snake &object)
+{
+	cout << "Game is started";
+	char user_command;
+	for(;;){
+		
+		switch (cur_state){
+			case die:
+				cout << "Game over!" << endl;
+				return;
+			default:
+				break;
+		}
+		if (kbhit()) user_command = getch();
+		
+		switch (user_command){
+			case 'a':
+				cur_direction = s_left;
+				break;
+			case 'd':
+				cur_direction = s_right;
+				break;
+			case 'w':
+				cur_direction = s_up;
+				break;
+			case 's':
+				cur_direction = s_down;
+			default:
+				break;
+		}
+		object.move();
+	}
+
+}
+
 
 int main(int argc, char const *argv[])
 {
-	Level one;
 	Snake hero;
-	hero.position();
-	hero.blit();
-	hero.move();
+	hero.change_size();
+	hero.change_size();
+	Game new_game;
+	new_game.play(hero);
 	return 0;
 }
