@@ -7,7 +7,7 @@ using namespace std;
 
 const int WIDTH = 20;
 const int HEIGHT = 15;
-int size = 2;
+int size = 1;
 
 enum state{live, die};
 state cur_state;
@@ -42,6 +42,7 @@ Snake :: Snake()
 	}
 	coordinates[0][0] = 5;
 	coordinates[0][1] = 5;
+	
 	speed = 2;
 }
 
@@ -100,21 +101,13 @@ void Snake :: display_all()
 
 void Snake :: change_size()
 {
-	size ++;
-	switch(cur_direction){
-			case s_right:
-				coordinates[size-1][0] = coordinates[size-2][0];
-				break;
-			case s_left:
-				coordinates[size-1][0] = coordinates[size-2][0];
-				break;
-			case s_up:
-				coordinates[size-1][1] = coordinates[size-2][1];
-				break;
-			case s_down:
-				coordinates[size-1][2] = coordinates[size-2][1];
-				break;
+	for (int i = 0; i < size; i++){
+    	for (int j = 0; j < 2; j++) cout << coordinates[i][j] << " ";
+     cout << endl;
 	}
+	coordinates[size][0] = coordinates[size-1][0];
+	coordinates[size][1] = coordinates[size-1][1];
+	size ++;
 }
 
 void Snake :: move()
@@ -199,7 +192,15 @@ int main(int argc, char const *argv[])
 	Snake hero;
 	hero.change_size();
 	hero.change_size();
+
+	for (int i = 0; i < size; i++){
+    	for (int j = 0; j < 2; j++) cout << hero.coordinates[i][j] << " ";
+     cout << endl;
+	}
+	
 	Game new_game;
 	new_game.play(hero);
+
+	//new_game.play(hero);
 	return 0;
 }
