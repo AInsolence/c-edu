@@ -7,10 +7,11 @@ using namespace std;
 
 const int WIDTH = 20;
 const int HEIGHT = 15;
-int size = 1;
+const int MAX_SNAKE_SIZE = 50;
+int size = 2;
 
 enum state{live, die};
-state cur_state;
+state cur_state = live;
 enum direction{s_right, s_left, s_up, s_down};
 direction cur_direction = s_right;
 
@@ -22,27 +23,35 @@ public:
 	~Snake(){};
 
 	char field[WIDTH][HEIGHT];
-	int coordinates[100][2];
+	int coordinates[MAX_SNAKE_SIZE][2];
 	int speed;
-	
+	void check_collide(int i, int j);
+
 	void def_snake();
 	void def_frame();
 	void display_all();
 	void change_size();
+	void clear_display();
 	void move();
 };
 
 Snake :: Snake()
 {
-	register int i, j;
+	register int i, j, p, k;
 	for (j = 0; j<HEIGHT; j++){
 		for (i = 0; i<WIDTH; i++){
 			field[i][j] = ' ';
 		}
 	}
+	for (p = 0; p < 2; p++){
+		for (k = 0; k < MAX_SNAKE_SIZE; k++){
+			coordinates[k][p] = -10;}
+	}
 	coordinates[0][0] = 5;
 	coordinates[0][1] = 5;
-	
+	coordinates[1][0] = 4;
+	coordinates[1][1] = 5;
+
 	speed = 2;
 }
 
@@ -63,27 +72,43 @@ void Snake :: def_snake()
 
 	for (j = 0; j<HEIGHT; j++){
 		for (i = 0; i<WIDTH; i++){
-			int x,y;
-			for (x = 0, y = 0; x < size, y < size; x++, y++){
-				if ((i == coordinates[x][0]) && (j == coordinates[y][1])){
-								field[i][j] = '0';
-								switch(cur_direction){
-										case s_right:
-											field[i-size][j] = ' ';
-											break;
-										case s_left:
-											field[i+size][j] = ' ';
-											break;
-										case s_up:
-											field[i][j+size] = ' ';
-											break;
-										case s_down:
-											field[i][j-size] = ' ';
-											break;
-								}
+
+			for (int e = 0; e < MAX_SNAKE_SIZE; e++){
+				if (coordinates[e][0] != -10){
+					if (e == 0){
+						if ((i == coordinates[e][0]) && (j == coordinates[e][1])){
+							check_collide(i, j);
+							field[i][j] = 'o';
+						}
+					}
+					else{
+						if ((i == coordinates[e][0]) && (j == coordinates[e][1])){
+										field[i][j] = '+';
+						}
+					}					
 				}
-			}
-			
+		}
+													
+		}
+	}
+}
+
+void Snake :: check_collide(int i, int j)
+{
+	for (int e = 1; e < 50; e++){
+		if (i == coordinates[e][0] && j == coordinates[e][1]){
+			cur_state = die;
+		}
+		
+	}
+}
+
+void Snake :: clear_display()
+{
+	register int i, j;
+	for (j = 0; j<HEIGHT; j++){
+		for (i = 0; i<WIDTH; i++){
+			field[i][j] = ' ';
 		}
 	}
 }
@@ -101,20 +126,21 @@ void Snake :: display_all()
 
 void Snake :: change_size()
 {
-	for (int i = 0; i < size; i++){
-    	for (int j = 0; j < 2; j++) cout << coordinates[i][j] << " ";
-     cout << endl;
-	}
-	coordinates[size][0] = coordinates[size-1][0];
-	coordinates[size][1] = coordinates[size-1][1];
+	coordinates[size][0] = -5;
+	coordinates[size][1] = -5;
 	size ++;
 }
 
 void Snake :: move()
 {		
-		float delay;
-		delay = 3/speed;
-
+		int delay;
+		delay = 1;
+		for (int e = MAX_SNAKE_SIZE; e > 0; e--){
+			if (coordinates[e][0] != -10){
+				coordinates[e][0] = coordinates[e-1][0];
+				coordinates[e][1] = coordinates[e-1][1];
+			}
+		}
 		switch (cur_direction){
 			case s_right:
 				coordinates[0][0] += 1;
@@ -140,7 +166,7 @@ void Snake :: move()
 		clock_t start;
 		start = clock();
 		while (clock()/CLOCKS_PER_SEC - start/CLOCKS_PER_SEC < delay);
-		
+		this -> clear_display();
 }
 
 class Game
@@ -153,9 +179,8 @@ public:
 
 void Game :: play(Snake &object)
 {
-	cout << "Game is started";
 	char user_command;
-	for(;;){
+	while(cur_state == live){
 		
 		switch (cur_state){
 			case die:
@@ -183,6 +208,7 @@ void Game :: play(Snake &object)
 		}
 		object.move();
 	}
+	cout << "GAME OVER!";
 
 }
 
@@ -192,15 +218,8 @@ int main(int argc, char const *argv[])
 	Snake hero;
 	hero.change_size();
 	hero.change_size();
-
-	for (int i = 0; i < size; i++){
-    	for (int j = 0; j < 2; j++) cout << hero.coordinates[i][j] << " ";
-     cout << endl;
-	}
-	
+	hero.change_size();
 	Game new_game;
 	new_game.play(hero);
-
-	//new_game.play(hero);
 	return 0;
 }
