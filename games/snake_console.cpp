@@ -14,6 +14,7 @@ enum state{live, die};
 state cur_state = live;
 enum direction{s_right, s_left, s_up, s_down};
 direction cur_direction = s_right;
+bool food_exist = false;
 
 
 class Snake
@@ -25,9 +26,12 @@ public:
 	char field[WIDTH][HEIGHT];
 	int coordinates[MAX_SNAKE_SIZE][2];
 	int speed;
+	int food_x, food_y;
 	void check_collide(int i, int j);
 
 	void def_snake();
+	void new_food();
+	void def_food();
 	void def_frame();
 	void display_all();
 	void change_size();
@@ -95,6 +99,10 @@ void Snake :: def_snake()
 
 void Snake :: check_collide(int i, int j)
 {
+	if (field[i][j] == '@'){
+		change_size();
+		food_exist = false;
+	} 
 	for (int e = 1; e < 50; e++){
 		if (i == coordinates[e][0] && j == coordinates[e][1]){
 			cur_state = die;
@@ -111,6 +119,22 @@ void Snake :: clear_display()
 			field[i][j] = ' ';
 		}
 	}
+}
+
+void Snake :: new_food()
+{
+	static long int start;
+	int s_rand;
+	s_rand = rand();
+	start = clock();
+	food_x = (start + s_rand) % WIDTH;
+	food_y = (start + s_rand) % HEIGHT;
+	food_exist = true;	
+}
+
+void Snake :: def_food()
+{
+	field[food_x][food_y] = '@';
 }
 
 void Snake :: display_all()
@@ -160,6 +184,8 @@ void Snake :: move()
 				break;
 		}
 		system("cls");
+		if (!food_exist) this -> new_food();
+		this -> def_food();
 		this -> def_snake();
 		this -> def_frame();
 		this -> display_all();
@@ -216,9 +242,6 @@ void Game :: play(Snake &object)
 int main(int argc, char const *argv[])
 {
 	Snake hero;
-	hero.change_size();
-	hero.change_size();
-	hero.change_size();
 	Game new_game;
 	new_game.play(hero);
 	return 0;
