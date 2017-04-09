@@ -127,8 +127,12 @@ void Snake :: new_food()
 	int s_rand;
 	s_rand = rand();
 	start = clock();
-	food_x = (start + s_rand) % WIDTH;
-	food_y = (start + s_rand) % HEIGHT;
+	food_x = (start) % WIDTH;
+	food_y = (start) % HEIGHT;
+	if (food_x == 0) food_x++;
+	if (food_x == WIDTH) food_x--;
+	if (food_y == 0) food_y++;
+	if (food_y == HEIGHT) food_y--;
 	food_exist = true;	
 }
 
