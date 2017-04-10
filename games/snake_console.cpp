@@ -9,6 +9,7 @@ const int WIDTH = 20;
 const int HEIGHT = 15;
 const int MAX_SNAKE_SIZE = 50;
 int size = 2;
+int scores = 0;
 
 enum state{live, die};
 state cur_state = live;
@@ -56,7 +57,7 @@ Snake :: Snake()
 	coordinates[1][0] = 4;
 	coordinates[1][1] = 5;
 
-	speed = 2;
+	speed = 1;
 }
 
 void Snake :: def_frame()
@@ -102,6 +103,7 @@ void Snake :: check_collide(int i, int j)
 	if (field[i][j] == '@'){
 		change_size();
 		food_exist = false;
+		scores += 10;
 	} 
 	for (int e = 1; e < 50; e++){
 		if (i == coordinates[e][0] && j == coordinates[e][1]){
@@ -211,14 +213,7 @@ void Game :: play(Snake &object)
 {
 	char user_command;
 	while(cur_state == live){
-		
-		switch (cur_state){
-			case die:
-				cout << "Game over!" << endl;
-				return;
-			default:
-				break;
-		}
+	
 		if (kbhit()) user_command = getch();
 		
 		switch (user_command){
@@ -238,7 +233,8 @@ void Game :: play(Snake &object)
 		}
 		object.move();
 	}
-	cout << "GAME OVER!";
+	cout << "GAME OVER!\n";
+	cout << "YOUR SCORES: " << scores;
 
 }
 
