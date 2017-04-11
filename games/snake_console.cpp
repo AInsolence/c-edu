@@ -25,7 +25,7 @@ public:
 	~Snake(){return;};
 	char field[WIDTH][HEIGHT];
 	int coordinates[MAX_SNAKE_SIZE][2];
-	int food_x, food_y;
+	int WTF;
 	void check_collide(int i, int j);
 	void def_snake();
 	void new_food();
@@ -35,7 +35,7 @@ public:
 	void change_size();
 	void clear_display();
 	void move();
-	int speed;
+	int food_x, food_y;
 };
 
 Snake :: Snake()
@@ -54,7 +54,6 @@ Snake :: Snake()
 	coordinates[0][1] = 5;
 	coordinates[1][0] = 4;
 	coordinates[1][1] = 5;
-	speed = 1;
 }
 
 void Snake :: def_frame()
@@ -232,7 +231,6 @@ void Game :: play(Snake &object)
 		object.move();
 	}
 	cout << "GAME OVER!\n";
-	cout << object.speed;
 	cout << "YOUR SCORES: " << scores;
 
 }
