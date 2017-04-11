@@ -7,7 +7,7 @@ using namespace std;
 
 const int WIDTH = 20;
 const int HEIGHT = 15;
-const int MAX_SNAKE_SIZE = 50;
+const int MAX_SNAKE_SIZE = 10;
 int size = 2; // Start snake size
 int scores = 0;
 
@@ -25,7 +25,7 @@ public:
 	~Snake(){return;};
 	char field[WIDTH][HEIGHT]; // GAmeplay
 	int coordinates[MAX_SNAKE_SIZE][2]; //Array with the snake head and sigmets coordinates
-	int WTF;
+	
 	void check_collide(int i, int j); //Check collision with itself & with a food
 	void def_snake(); //Add snake symbols to gameplay(field) array
 	void new_food(); //create new food coordinates
@@ -47,7 +47,7 @@ Snake :: Snake()
 		}
 	}
 	for (p = 0; p < 2; p++){
-		for (k = 0; k < MAX_SNAKE_SIZE; k++){
+		for (k = 0; k < MAX_SNAKE_SIZE -1; k++){
 			coordinates[k][p] = -10;}
 	}
 	coordinates[0][0] = 5;
@@ -74,7 +74,7 @@ void Snake :: def_snake()
 	for (j = 0; j<HEIGHT; j++){
 		for (i = 0; i<WIDTH; i++){
 
-			for (int e = 0; e < MAX_SNAKE_SIZE; e++){
+			for (int e = 0; e < MAX_SNAKE_SIZE -1; e++){
 				if (coordinates[e][0] != -10){
 					if (e == 0){
 						if ((i == coordinates[e][0]) && (j == coordinates[e][1])){
@@ -101,7 +101,7 @@ void Snake :: check_collide(int i, int j)
 		food_exist = false;
 		scores += 10;
 	} 
-	for (int e = 1; e < 50; e++){
+	for (int e = 1; e < MAX_SNAKE_SIZE -1; e++){
 		if (i == coordinates[e][0] && j == coordinates[e][1]){
 			cur_state = die;
 		}
@@ -125,12 +125,10 @@ void Snake :: new_food()
 	int s_rand;
 	s_rand = rand();
 	start = clock();
-	food_x = (start) % WIDTH;
-	food_y = (start) % HEIGHT;
+	food_x = (start) % (WIDTH - 2);
+	food_y = (start) % (HEIGHT - 2);
 	if (food_x == 0) food_x++;
-	if (food_x == WIDTH - 1) food_x--;
 	if (food_y == 0) food_y++;
-	if (food_y == HEIGHT - 1) food_y--;
 	food_exist = true;	
 }
 
@@ -154,14 +152,15 @@ void Snake :: change_size()
 {
 	coordinates[size][0] = -5;
 	coordinates[size][1] = -5;
-	size ++;
+	if (size < MAX_SNAKE_SIZE) size++;
+	else return;
 }
 
 void Snake :: move()
 {		
 		int delay;
 		delay = 1;
-		for (int e = MAX_SNAKE_SIZE; e > 0; e--){
+		for (int e = MAX_SNAKE_SIZE -1; e > 0; e--){
 			if (coordinates[e][0] != -10){
 				coordinates[e][0] = coordinates[e-1][0];
 				coordinates[e][1] = coordinates[e-1][1];
@@ -170,7 +169,7 @@ void Snake :: move()
 		switch (cur_direction){
 			case s_right:
 				coordinates[0][0] += 1;
-				if (coordinates[0][0] == (WIDTH)) coordinates[0][0] = 1;
+				if (coordinates[0][0] == (WIDTH -1)) coordinates[0][0] = 1;
 				break;
 			case s_left:
 				coordinates[0][0] -= 1;
@@ -182,7 +181,7 @@ void Snake :: move()
 				break;
 			case s_down:
 				coordinates[0][1] += 1;
-				if (coordinates[0][1] == (HEIGHT)) coordinates[0][1] = 1;
+				if (coordinates[0][1] == (HEIGHT -1)) coordinates[0][1] = 1;
 				break;
 		}
 		system("cls");
@@ -209,6 +208,7 @@ public:
 void Game :: play(Snake &object)
 {
 	char user_command;
+	user_command = 'd';
 	while(cur_state == live){
 	
 		if (kbhit()) user_command = getch();
