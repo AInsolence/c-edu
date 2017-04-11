@@ -8,7 +8,8 @@ using namespace std;
 const int WIDTH = 20;
 const int HEIGHT = 15;
 const int MAX_SNAKE_SIZE = 50;
-int size = 2;
+int size = 2; // Start snake size
+int scores = 0;
 
 enum state{live, die};
 state cur_state = live;
@@ -21,22 +22,20 @@ class Snake
 {
 public:
 	Snake();
-	~Snake(){};
-
-	char field[WIDTH][HEIGHT];
-	int coordinates[MAX_SNAKE_SIZE][2];
-	int speed;
+	~Snake(){return;};
+	char field[WIDTH][HEIGHT]; // GAmeplay
+	int coordinates[MAX_SNAKE_SIZE][2]; //Array with the snake head and sigmets coordinates
+	int WTF;
+	void check_collide(int i, int j); //Check collision with itself & with a food
+	void def_snake(); //Add snake symbols to gameplay(field) array
+	void new_food(); //create new food coordinates
+	void def_food(); //Add food symbols to gameplay
+	void def_frame(); //Add frame symbols to gameplay
+	void display_all(); //cout all gameplay
+	void change_size(); //increase the snake size after eating the food
+	void clear_display();//reset all symbols to ' '
+	void move();//check direction and move the snake
 	int food_x, food_y;
-	void check_collide(int i, int j);
-
-	void def_snake();
-	void new_food();
-	void def_food();
-	void def_frame();
-	void display_all();
-	void change_size();
-	void clear_display();
-	void move();
 };
 
 Snake :: Snake()
@@ -55,8 +54,6 @@ Snake :: Snake()
 	coordinates[0][1] = 5;
 	coordinates[1][0] = 4;
 	coordinates[1][1] = 5;
-
-	speed = 2;
 }
 
 void Snake :: def_frame()
@@ -102,6 +99,7 @@ void Snake :: check_collide(int i, int j)
 	if (field[i][j] == '@'){
 		change_size();
 		food_exist = false;
+		scores += 10;
 	} 
 	for (int e = 1; e < 50; e++){
 		if (i == coordinates[e][0] && j == coordinates[e][1]){
@@ -130,9 +128,9 @@ void Snake :: new_food()
 	food_x = (start) % WIDTH;
 	food_y = (start) % HEIGHT;
 	if (food_x == 0) food_x++;
-	if (food_x == WIDTH) food_x--;
+	if (food_x == WIDTH - 1) food_x--;
 	if (food_y == 0) food_y++;
-	if (food_y == HEIGHT) food_y--;
+	if (food_y == HEIGHT - 1) food_y--;
 	food_exist = true;	
 }
 
@@ -191,6 +189,7 @@ void Snake :: move()
 		if (!food_exist) this -> new_food();
 		this -> def_food();
 		this -> def_snake();
+		this -> def_food();
 		this -> def_frame();
 		this -> display_all();
 		clock_t start;
@@ -211,14 +210,7 @@ void Game :: play(Snake &object)
 {
 	char user_command;
 	while(cur_state == live){
-		
-		switch (cur_state){
-			case die:
-				cout << "Game over!" << endl;
-				return;
-			default:
-				break;
-		}
+	
 		if (kbhit()) user_command = getch();
 		
 		switch (user_command){
@@ -238,7 +230,8 @@ void Game :: play(Snake &object)
 		}
 		object.move();
 	}
-	cout << "GAME OVER!";
+	cout << "GAME OVER!\n";
+	cout << "YOUR SCORES: " << scores;
 
 }
 
