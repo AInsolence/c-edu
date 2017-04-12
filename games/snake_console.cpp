@@ -292,8 +292,6 @@ int help()
 
 int main(int argc, char const *argv[])
 {
-	Snake hero;
-	Game new_game;
 	char choise;
 
 	for (;;){
@@ -301,9 +299,12 @@ int main(int argc, char const *argv[])
 		choise = menu();
 
 		switch (choise){
-			case 's':
+			case 's':{
+				Snake hero;
+				Game new_game;
 				new_game.play(hero);;
 				break;
+			}
 			case 'h':
 				help();
 				break;
