@@ -7,7 +7,7 @@ using namespace std;
 
 const int WIDTH = 20;
 const int HEIGHT = 15;
-const int MAX_SNAKE_SIZE = 10;
+const int MAX_SNAKE_SIZE = 50;
 int size = 2; // Start snake size
 int scores = 0;
 
@@ -25,7 +25,7 @@ public:
 	~Snake(){return;};
 	char field[WIDTH][HEIGHT]; // GAmeplay
 	int coordinates[MAX_SNAKE_SIZE][2]; //Array with the snake head and sigmets coordinates
-	
+	int s_speed;
 	void check_collide(int i, int j); //Check collision with itself & with a food
 	void def_snake(); //Add snake symbols to gameplay(field) array
 	void new_food(); //create new food coordinates
@@ -54,6 +54,7 @@ Snake :: Snake()
 	coordinates[0][1] = 5;
 	coordinates[1][0] = 4;
 	coordinates[1][1] = 5;
+	s_speed = 800;
 }
 
 void Snake :: def_frame()
@@ -99,7 +100,7 @@ void Snake :: check_collide(int i, int j)
 	if (field[i][j] == '@'){
 		change_size();
 		food_exist = false;
-		scores += 10;
+		scores += 10000/s_speed;
 	} 
 	for (int e = 1; e < MAX_SNAKE_SIZE -1; e++){
 		if (i == coordinates[e][0] && j == coordinates[e][1]){
@@ -153,13 +154,37 @@ void Snake :: change_size()
 	coordinates[size][0] = -5;
 	coordinates[size][1] = -5;
 	if (size < MAX_SNAKE_SIZE) size++;
-	else return;
+	else {
+		cout << "\n\n\n\n\nYou Win! You achieve maximum snake size!!!\n\n\n\n\n";
+		exit(1);
+	}
 }
 
 void Snake :: move()
 {		
-		int delay;
-		delay = 1;
+		switch (size){
+			case 3:
+				s_speed = 700;
+				break;
+			case 6:
+				s_speed = 600;
+				break;
+			case 9:
+				s_speed = 500;
+				break;
+			case 12:
+				s_speed = 400;
+				break;
+			case 15:
+				s_speed = 300;
+				break;
+			case 18:
+				s_speed = 200;
+				break;
+			case 21:
+				s_speed = 100;
+				break;
+		}
 		for (int e = MAX_SNAKE_SIZE -1; e > 0; e--){
 			if (coordinates[e][0] != -10){
 				coordinates[e][0] = coordinates[e-1][0];
@@ -185,15 +210,15 @@ void Snake :: move()
 				break;
 		}
 		system("cls");
-		if (!food_exist) this -> new_food();
-		this -> def_food();
-		this -> def_snake();
-		this -> def_food();
-		this -> def_frame();
-		this -> display_all();
+		if (!food_exist) new_food();
+		def_food();
+		def_snake();
+		def_food();
+		def_frame();
+		display_all();
 		clock_t start;
 		start = clock();
-		while (clock()/CLOCKS_PER_SEC - start/CLOCKS_PER_SEC < delay);
+		while (clock() - start < s_speed);
 		this -> clear_display();
 }
 
@@ -211,7 +236,7 @@ void Game :: play(Snake &object)
 	user_command = 'd';
 	while(cur_state == live){
 	
-		if (kbhit()) user_command = getch();
+		if (_kbhit()) user_command = _getch();
 		
 		switch (user_command){
 			case 'a':
