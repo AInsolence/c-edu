@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <cstring>
 #include <conio.h>
 #include <time.h>
 
@@ -256,15 +257,59 @@ void Game :: play(Snake &object)
 		object.move();
 	}
 	cout << "GAME OVER!\n";
-	cout << "YOUR SCORES: " << scores;
+	cout << "YOUR SCORES: " << scores << "\n\n\n";
 
 }
 
+char menu(){
+
+	char choise;
+
+	do {
+		cout << '\n';
+		cout << "(S)tart the Game" << '\n';
+		cout << "(H)elp\n";
+		cout << "(Q)uit" << '\n';
+		 cin >> choise;
+		}while(!strchr("shq", tolower(choise))); // Check user input
+
+	return tolower(choise);
+}
+
+int help()
+{
+	system("cls");
+	cout << "\n\nThis is a classic snake game.\n";
+	cout << "Control keys:\n";
+	cout << "w - move up\n";
+	cout << "a - move left\n";
+	cout << "s - move down\n";
+	cout << "d - move right\n";
+	cout << "The aim to achieve maximum snake size: " << MAX_SNAKE_SIZE << "segments:))\n\n\n";
+
+	return 0;
+}
 
 int main(int argc, char const *argv[])
 {
 	Snake hero;
 	Game new_game;
-	new_game.play(hero);
+	char choise;
+
+	for (;;){
+
+		choise = menu();
+
+		switch (choise){
+			case 's':
+				new_game.play(hero);;
+				break;
+			case 'h':
+				help();
+				break;
+			case 'q':
+				return 0;
+		}
+	}
 	return 0;
 }
