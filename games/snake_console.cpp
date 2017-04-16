@@ -9,7 +9,7 @@ using namespace std;
 const int WIDTH = 20;
 const int HEIGHT = 15;
 const int MAX_SNAKE_SIZE = 50;
-int size = 2; // Start snake size
+int s_size = 2; // Start snake s_size
 int scores = 0;
 
 enum state{live, die};
@@ -33,7 +33,7 @@ public:
 	void def_food(); //Add food symbols to gameplay
 	void def_frame(); //Add frame symbols to gameplay
 	void display_all(); //cout all gameplay
-	void change_size(); //increase the snake size after eating the food
+	void change_s_size(); //increase the snake s_size after eating the food
 	void clear_display();//reset all symbols to ' '
 	void move();//check direction and move the snake
 	int food_x, food_y;
@@ -99,7 +99,7 @@ void Snake :: def_snake()
 void Snake :: check_collide(int i, int j)
 {
 	if (field[i][j] == '@'){
-		change_size();
+		change_s_size();
 		food_exist = false;
 		scores += 10000/s_speed;
 	} 
@@ -150,20 +150,20 @@ void Snake :: display_all()
 	}
 }
 
-void Snake :: change_size()
+void Snake :: change_s_size()
 {
-	coordinates[size][0] = -5;
-	coordinates[size][1] = -5;
-	if (size < MAX_SNAKE_SIZE) size++;
+	coordinates[s_size][0] = -5;
+	coordinates[s_size][1] = -5;
+	if (s_size < MAX_SNAKE_SIZE) s_size++;
 	else {
-		cout << "\n\n\n\n\nYou Win! You achieve maximum snake size!!!\n\n\n\n\n";
+		cout << "\n\n\n\n\nYou Win! You achieve maximum snake s_size!!!\n\n\n\n\n";
 		exit(1);
 	}
 }
 
 void Snake :: move()
 {		
-		switch (size){
+		switch (s_size){
 			case 3:
 				s_speed = 700;
 				break;
@@ -285,7 +285,7 @@ int help()
 	cout << "a - move left\n";
 	cout << "s - move down\n";
 	cout << "d - move right\n";
-	cout << "The aim to achieve maximum snake size: " << MAX_SNAKE_SIZE << "segments:))\n\n\n";
+	cout << "The aim to achieve maximum snake s_size: " << MAX_SNAKE_SIZE << "segments:))\n\n\n";
 
 	return 0;
 }
