@@ -2,8 +2,6 @@
 
 using namespace std;
 
-const int SIZE = 5;
-
 template <class Qtype, const int SIZE>
 class Queue
 {
