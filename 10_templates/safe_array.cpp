@@ -44,5 +44,17 @@ int main(int argc, char const *argv[])
 		cout << d_array[j] << ' ';
 	}
 
+	Safe_array<const char *> ch_array;
+	ch_array[0] = "Hello";
+	ch_array[1] = "World";
+	ch_array[2] = "from";
+	ch_array[3] = "incredible";
+	ch_array[4] = "C++";
+
+
+	for (int j = 0; j < SIZE; j++){
+		cout << ch_array[j] << ' ';
+	}
+
 	return 0;
 }
