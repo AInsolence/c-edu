@@ -10,9 +10,16 @@ void xhandler(int i)
 		if (i){
 			throw i;
 		}
+		throw 'a';
 	}
 	catch(int j){
 		cout << "Interception exception #" << j << endl;
+	}
+	catch(char ch){
+		cout << "Interception #" << ch << endl;
+	}
+	catch(...){
+		cout << "Last frontier!)" << endl;
 	}
 }
 
@@ -33,6 +40,7 @@ int main(int argc, char const *argv[])
 	xhandler(0);
 	xhandler(2);
 	xhandler(3);
+	xhandler('a');
 
 	double a, b;
 
