@@ -10,8 +10,18 @@ ostream & setup (ostream & stream)
 	return stream;
 }
 
+istream & prompt (istream & stream)
+{
+	cin >> hex;
+	cout << "Please enter in hex " << endl;
+	return stream;
+}
+
 int main(int argc, char const *argv[])
 {
+	double x;
 	cout << setup << "Hello People!" << endl;
+	 cin >> prompt >> x;
+	cout << hex << x;
 	return 0;
 }
