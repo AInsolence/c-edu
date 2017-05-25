@@ -22,5 +22,17 @@ int main(int argc, char const *argv[])
 
 	in.close();
 
+	const char * ptr_string = "Hello from binaryIO programm!\n";
+	ofstream out("test.txt", ios :: out | ios :: app);
+
+	if (!out){
+		cout << "cannot open the file test.txt";
+		return 1;
+	}
+
+	while(*ptr_string)out.put(*ptr_string++);
+
+	out.close();
+
 	return 0;
 }

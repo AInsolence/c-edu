@@ -1,3 +1,9 @@
-1123.22Here is some text information!
-   Helllolololo! 
-   Helllolololo! 
+Hello from binaryIO programm!Hello from binaryIO programm!Hello from binaryIO programm!Hello from binaryIO programm!Hello from binaryIO programm!Hello from binaryIO programm!
+Hello from binaryIO programm!
+Hello from binaryIO programm!
+Hello from binaryIO programm!
+Hello from binaryIO programm!
+Hello from binaryIO programm!
+Hello from binaryIO programm!
+Hello from binaryIO programm!
+Hello from binaryIO programm!
