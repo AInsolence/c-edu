@@ -14,14 +14,35 @@ void writeFile(fstream &file);
 void readFile(fstream &file, char buffer[BUF_SIZE])
 	{
 		int position;
+		int status, is_eof, is_fail, is_bad, is_good;
+
+		file.seekg(0, ios::end);
+		const size_t f_end = file.tellg();
+
+		cout << "Files size is " << f_end << " bit.\n";
+
 		cout << "Please enter position to read from file some info" << endl;
 		 cin >> position;
 		file.seekg(position, ios::beg);
-		file.read(&buffer[0], BUF_SIZE);
-
-		for(int i = 0; i < file.gcount(); i++){
-		cout << buffer[i];
+		file.read(&buffer[0], f_end);
+		
+		for (int i = 0; i < f_end; i++){
+			cout << buffer[i];
 		}
+		
+
+		status = file.rdstate();
+		is_eof = file.eof();
+		is_fail = file.fail();
+		is_bad = file.bad();
+		is_good = file.good();
+
+		cout << "\nStatus is: " << status << endl;
+		cout << "EOF flag is " << is_eof << endl;
+		cout << "fail flag is " << is_fail << endl;
+		cout << "bad flag is " << is_bad << endl;
+		cout << "good flag is " << is_good << endl;
+
 		file.clear(); //cleares EOF bit
 	}
 
@@ -29,6 +50,7 @@ void writeFile(fstream &file)
 {
 	string temp;
 	int position, gptr_place, pptr_place;
+	int status, is_eof, is_fail, is_bad, is_good;
 
 	file.width(10);
 	file.fill('#');
@@ -48,7 +70,21 @@ void writeFile(fstream &file)
 	
 	cout << gptr_place << " " << pptr_place << endl;
 	file.write(temp.c_str(), STR_SIZE);
-	file << right << "!tag!";
+
+	status = file.rdstate();
+	is_eof = file.eof();
+	is_fail = file.fail();
+	is_bad = file.bad();
+	is_good = file.good();
+
+	cout << "\nStatus is: " << status << endl;
+	cout << "EOF flag is " << is_eof << endl;
+	cout << "fail flag is " << is_fail << endl;
+	cout << "bad flag is " << is_bad << endl;
+	cout << "good flag is " << is_good << endl;
+
+
+	file << right << "!!!tag!!!";
 	cout << temp;
 
 	cout << gptr_place << " " << pptr_place << endl;
