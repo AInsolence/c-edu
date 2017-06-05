@@ -3,6 +3,7 @@
 #include <cstring>
 #include <cstdio>
 #include <limits>
+#include <iomanip>
 
 using namespace std;
 const int BUF_SIZE = 1024;
@@ -29,6 +30,10 @@ void writeFile(fstream &file)
 	string temp;
 	int position, gptr_place, pptr_place;
 
+	file.width(10);
+	file.fill('#');
+	file.setf(ios::scientific | ios::showpos);
+
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	cout << "\nPlease enter some info to add to the file" << endl;
 	 getline(cin, temp);
@@ -43,6 +48,7 @@ void writeFile(fstream &file)
 	
 	cout << gptr_place << " " << pptr_place << endl;
 	file.write(temp.c_str(), STR_SIZE);
+	file << right << "!tag!";
 	cout << temp;
 
 	cout << gptr_place << " " << pptr_place << endl;
