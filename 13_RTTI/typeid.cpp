@@ -13,8 +13,8 @@ public:
 class Base
 {
 public:
-	//virtual void f(){};
-	Base(){};
+	virtual void f(){}; //polymorphic base type allows typeid()
+	Base(){};          // to get the particular type of derived objects
 	~Base(){};
 	
 };
@@ -34,6 +34,11 @@ public:
 	~Derived2(){};
 	
 };
+
+void whatType(Base &object)
+{
+	cout << "Object type is: " << typeid(object).name() << endl;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -74,6 +79,10 @@ int main(int argc, char const *argv[])
 	cout << "pointer ptr point to an object type: " << typeid(*ptr).name() << endl;
 
 	cout << "Type of int is: " << typeid(int).name() << endl;
+
+	whatType(derived2);
+	whatType(derived1);
+	whatType(base);
 
 	return 0;
 }
