@@ -40,6 +40,8 @@ namespace counterNameSpace{
 //We can add new namespace scope to program or use
 //'namespace::variable' explicitly
 using namespace counterNameSpace;
+using counterNameSpace::lowerbound;
+///////////////////////////////////
 
 class Base
 {
@@ -102,7 +104,6 @@ int main(int argc, char const *argv[])
 	else cout << "Fail cast from Derived to Base\n";
 
 	//const_cast
-
 
 	//static_cast example
 
