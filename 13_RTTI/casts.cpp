@@ -4,6 +4,43 @@
 
 using namespace std;
 
+
+namespace counterNameSpace{
+	int lowerbound, upperbound;
+	class Counter
+	{
+		int count;
+	public:
+		Counter(int n);
+		~Counter(){}
+		void reset(int n);
+		int run();
+	};
+
+	Counter::Counter(int n)
+	{
+		if (n <= upperbound) count = n;
+		else count = upperbound;
+	}
+
+	void Counter::reset(int n)
+	{
+		if (n <= upperbound) count = n;
+	}
+
+	int Counter::run()
+	{
+		if (count > lowerbound) return count --;
+		else return lowerbound;
+	}
+	
+
+}
+
+//We can add new namespace scope to program or use
+//'namespace::variable' explicitly
+using namespace counterNameSpace;
+
 class Base
 {
 public:
@@ -91,5 +128,19 @@ int main(int argc, char const *argv[])
 
 	cout << i;
 	////////////////////////////
+
+	//Namespace
+
+	counterNameSpace::lowerbound = 0;
+	counterNameSpace::upperbound = 100;
+
+	counterNameSpace::Counter object(10);
+	object.reset(30);
+	int count;
+	do{
+		count = object.run();
+		cout << count << endl;
+	}while(count > counterNameSpace::lowerbound);
+
 	return 0;
 }
