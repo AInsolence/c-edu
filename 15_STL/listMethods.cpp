@@ -149,6 +149,16 @@ int main(int argc, char const *argv[])
 	first.merge(second);
 	first.sort();
 	show_info(first); show_info(second);
+	//Merge lists 2
+	list<char> forth, fifth;
+
+	for (int i = 0; i < 10; i+=2){
+		forth.push_back('A'+ i);
+		fifth.push_back('B'+ i);
+	}
+	show_info(forth); show_info(fifth);
+	forth.merge(fifth);
+	show_info(forth); show_info(fifth);
 
 	//Swap & Unique functions
 	second.swap(first);
