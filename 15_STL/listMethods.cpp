@@ -167,8 +167,11 @@ int main(int argc, char const *argv[])
 	//Resize
 	second.resize(7);
 	show_info(second);
-
 	cout << first.empty();
-
+	//Three_d objects list
+	Three_d object(20, 30, 40);
+	list<Three_d> mylist(10, object);
+	show_info(mylist);
+	
 	return 0;
 }
