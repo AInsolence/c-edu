@@ -61,5 +61,17 @@ int main(int argc, char const *argv[])
 	cout << map_ptr->second;//Cause of struct *pair* has
 							//'first' as name to key &
 							//'second' as name to value
+	//Get all keys and collect it in vector
+	map<int, int> m;
+	for (int i = 0; i < 26; i++){
+		m.insert(make_pair(i, 65+i));
+	}
+	vector<int> v;
+	for(map<int,int>::iterator it = m.begin(); it != m.end(); ++it) {
+		v.push_back(it->first);
+		cout << it->first << "\n";
+	}
+
+
 	return 0;
 }
