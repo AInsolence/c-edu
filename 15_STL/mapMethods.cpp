@@ -2,8 +2,136 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 using namespace std;
+
+class DictElement
+{
+public:
+	string language;
+	DictElement(){language = "english";}
+	DictElement(string lang){language = lang;}
+	virtual ~DictElement(){}
+	virtual void info() = 0;
+};
+
+class Word : public DictElement
+{
+public:
+	string word;
+	Word(){word = "word_here";}
+	Word(string input){word = input;}
+	Word(string input, string lang) : DictElement(lang){word = input;}
+	~Word(){}
+	void info();
+	bool operator < (const Word obj_2);
+
+	friend bool operator > (const Word obj_1, const Word obj_2);
+	friend bool operator < (const Word obj_1, const Word obj_2);
+	friend bool operator == (const Word obj_1, const Word obj_2);
+	friend bool operator >= (const Word obj_1, const Word obj_2);
+	friend bool operator <= (const Word obj_1, const Word obj_2);
+};
+
+void Word::info()
+{
+	cout << "Word: " << word << endl;
+	cout << "Language: " << language << endl;
+}
+
+bool Word::operator < (const Word obj_2)
+{
+	if (word < obj_2.word) return true;
+	return false;
+}
+
+bool operator > (const Word obj_1, const Word obj_2)
+{
+	if (obj_1.word > obj_2.word) return true;
+	return false;
+}
+bool operator < (const Word obj_1, const Word obj_2)
+{
+	if (obj_1.word < obj_2.word) return true;
+	return false;
+}
+bool operator == (const Word obj_1, const Word obj_2)
+{
+	if (obj_1.word == obj_2.word) return true;
+	return false;
+}
+bool operator >= (const Word obj_1, const Word obj_2)
+{
+	if (obj_1.word >= obj_2.word) return true;
+	return false;
+}
+bool operator <= (const Word obj_1, const Word obj_2)
+{
+	if (obj_1.word <= obj_2.word) return true;
+	return false;
+}
+
+class Definition : public DictElement
+{
+public:
+	string definition;
+	Definition(){definition = "def_here";}
+	Definition(string input){definition = input;}
+	Definition(string input, string lang) : DictElement(lang){definition = input;}
+	~Definition(){}
+	void info();
+	bool operator < (const Definition obj_2);
+
+	friend bool operator > (const Definition obj_1, const Definition obj_2);
+	friend bool operator < (const Definition obj_1, const Definition obj_2);
+	friend bool operator == (const Definition obj_1, const Definition obj_2);
+	friend bool operator >= (const Definition obj_1, const Definition obj_2);
+	friend bool operator <= (const Definition obj_1, const Definition obj_2);
+};
+
+void Definition::info()
+{
+	cout << "Definition: " << definition << endl;
+}
+
+bool Definition :: operator < (const Definition obj_2)
+{
+	if (definition < obj_2.definition) return true;
+	return false;
+}
+
+bool operator > (const Definition obj_1, const Definition obj_2)
+{
+	if (obj_1.definition > obj_2.definition) return true;
+	return false;
+}
+bool operator < (const Definition obj_1, const Definition obj_2)
+{
+	if (obj_1.definition < obj_2.definition) return true;
+	return false;
+}
+bool operator == (const Definition obj_1, const Definition obj_2)
+{
+	if (obj_1.definition == obj_2.definition) return true;
+	return false;
+}
+bool operator >= (const Definition obj_1, const Definition obj_2)
+{
+	if (obj_1.definition >= obj_2.definition) return true;
+	return false;
+}
+bool operator <= (const Definition obj_1, const Definition obj_2)
+{
+	if (obj_1.definition <= obj_2.definition) return true;
+	return false;
+}
+
+void show_element(pair<Word, Definition> element)
+{
+	element.first.info();
+	element.second.info();
+}
 
 int main(int argc, char const *argv[])
 {
@@ -72,6 +200,22 @@ int main(int argc, char const *argv[])
 		cout << it->first << "\n";
 	}
 
+	//Create objects to dictionary
+	map<Word, Definition> dictionary;
+
+	Word fork("fork", "english");
+	Word knife("knife", "english");
+	Word spoon("spoon", "english");
+	
+	Definition fork_def("a small object with three or four points and a handle, that you use to pick up food and eat");
+	Definition knife_def("a tool, usually with a metal blade and a handle, used for cutting and spreading food or other substances, or as a weapon");
+	Definition spoon_def("an object consisting of a round, hollow part and a handle, used for mixing, serving, and eating food");
+
+	dictionary.insert(make_pair(fork, fork_def));
+	dictionary.insert(make_pair(knife, knife_def));
+	dictionary.insert(make_pair(spoon, spoon_def));
+
+	for_each(dictionary.begin(), dictionary.end(), show_element);
 
 	return 0;
 }
