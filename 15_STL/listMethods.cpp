@@ -98,60 +98,44 @@ bool RemoveIntUnPred(int target)
 int main(int argc, char const *argv[])
 {
 	list<string> first;
-	
-
 	first.assign(5, "Human");
 	string family [4] = {"Anton", "Marina", "Roma", "Elina"};
-
 	first.insert(first.begin(), 10, "Who?");
 	first.insert(first.begin(), 3, "I am");
-
 	show_info(first);
-
 	list<string> second(first);
 	show_info(second);
 	second.clear();
-
 	string * ptr;
 	ptr = family;
-
 	for (int i = 0; i < (sizeof(family)/sizeof(string)); i++, ptr++){
 		second.push_front(*ptr);
 	}
 	show_info(second);
-
 	second.sort(reverse_sort_func);
 	show_info(second);
-
 	first.remove("Who?");
 	first.remove_if(RemoveUnPred);
 	show_info(first);
-
 	//Remove_if with predicate
 	list<int> third;
 	for (int i = 0; i < 10; i++) third.push_back(i);
 	show_info(third);
 	third.remove_if(RemoveIntUnPred);
 	show_info(third);
-
 	third.reverse();
-
 	//Splice function
 	typename std::list<string>::iterator start;
 	start = second.begin();
 	std::advance(start, 2);//increase iterator to 2 positions
-
 	first.splice(first.end(), second, second.begin(), start);
-
 	show_info(first); show_info(second);
-
 	//Merge lists
 	first.merge(second);
 	first.sort();
 	show_info(first); show_info(second);
 	//Merge lists 2
 	list<char> forth, fifth;
-
 	for (int i = 0; i < 10; i+=2){
 		forth.push_back('A'+ i);
 		fifth.push_back('B'+ i);
@@ -159,7 +143,6 @@ int main(int argc, char const *argv[])
 	show_info(forth); show_info(fifth);
 	forth.merge(fifth);
 	show_info(forth); show_info(fifth);
-
 	//Swap & Unique functions
 	second.swap(first);
 	second.unique();
@@ -172,6 +155,6 @@ int main(int argc, char const *argv[])
 	Three_d object(20, 30, 40);
 	list<Three_d> mylist(10, object);
 	show_info(mylist);
-	
+
 	return 0;
 }
