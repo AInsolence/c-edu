@@ -10,7 +10,10 @@
 
 using namespace std;
 
-const int SIZE = 18;
+namespace{
+	const int SIZE = 3;
+}
+
 
 int my_rand()
 {	
@@ -34,6 +37,7 @@ void show_sequence(Sequence const& sequence)
 {
 	cout << endl;
     typedef typename Sequence::value_type T;
+    //for_each: returns unPred's bool value
     for_each(sequence.begin(), sequence.end(), show_element<T>); 
     cout << endl;
 }
@@ -150,6 +154,60 @@ int main(int argc, char const *argv[])
 	fill_n(v_back_copy.end() - 7, 5, 44);//from where, how much, new value
 	cout << "After fill_n: ";
 	show_sequence< vector<int> >(v_back_copy);
-	
+
+	//find: returns iterator to the first element == val
+	v_iter = find(v_back_copy.begin(), v_back_copy.end(), 44);
+	cout << *v_iter << endl;
+
+	//find_end: returns iterator to the first element
+	//in the last appearence of the seq_2 in the seq_1
+	std::vector<int> v_back_copy_3;
+	for(int i = 4; i ; i--){
+		my_list.push_back(5-i);
+		my_list.push_front(i);
+		v_back_copy_3.push_back(5-i);
+	}
+	cout << "my_list: ";
+	show_sequence< list<int> >(my_list);
+	cout << "v_back_copy_3: ";
+	show_sequence< vector<int> >(v_back_copy_3);
+
+	std::list<int>::iterator lst_iter;
+	lst_iter = find_end(my_list.begin(), my_list.end(),\
+						v_back_copy_3.begin(), v_back_copy_3.end());
+
+	//distance: returns number of elements betwee two iterators
+	cout << distance(v_back_copy.begin(), v_iter);
+	cout << " elements between begin of the vector and element == 44" << endl;
+	cout << "Last position of the v_back_copy_3 in the my_list is: ";
+	cout << distance(my_list.begin(), lst_iter) << endl;
+
+	//find_first_of: returns iterator to the first element
+	//in the first appearence of the seq_2 in the seq_1
+	lst_iter = find_first_of(my_list.begin(), my_list.end(),\
+						v_back_copy_3.begin(), v_back_copy_3.end());
+	cout << "First position of the v_back_copy_3 in the my_list is: ";
+	cout << distance(my_list.begin(), lst_iter) << endl;
+
+	//find_if: returns iterator to the firs element
+	//!NOTE: find_if_not doesn't work! This is a question why?
+	lst_iter = find_if(my_list.begin(), my_list.end(), unPred<int>);
+	cout << "Position of the first element in the my_list == " << SIZE << ": ";
+	cout << distance(my_list.begin(), lst_iter) << endl;
+
+	//generate_n
+	cout << "Before generate_n: ";
+	show_sequence< vector<int> >(v_back_copy);
+	generate_n(v_back_copy.begin(), 5, my_rand);//from where, how much, new value
+	cout << "After generate_n: ";
+	show_sequence< vector<int> >(v_back_copy);
+
+	//includes: returns true if the range elements of the seq_2 is in the seq_1
+	if(includes(my_list.begin(), my_list.end(),\
+			 v_back_copy_3.begin(), v_back_copy_3.end()-2)){
+		cout << \
+		"my_list contains  elements from begin to end - 2 of v_back_copy_3" << endl;
+	}
+
 	return 0;
 }
