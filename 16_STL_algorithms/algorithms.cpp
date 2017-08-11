@@ -128,6 +128,7 @@ int main(int argc, char const *argv[])
 	cout << endl;
 	pair<std::list<int>::iterator, std::list<int>::iterator> range_1, range_2;
 	range_1 = equal_range(my_list.begin(), my_list.end(), 5);
+		//lower_bound, upper_bound
 	range_2 = make_pair(lower_bound(my_list.begin(), my_list.end(), 5),\
 						upper_bound(my_list.begin(), my_list.end(), 5));
 	if (range_1 == range_2) cout << "We are find range with elements == 5" << endl;
@@ -208,6 +209,53 @@ int main(int argc, char const *argv[])
 		cout << \
 		"my_list contains  elements from begin to end - 2 of v_back_copy_3" << endl;
 	}
+
+	//inplace_merge: merges and sorts two sorted parts of one sequence
+	//NOTE: faster than sort/stable_sort for the same case
+	std::vector<char> v1, v2, v3;
+	for(int i = 0; i < 10; i += 2){
+		v1.push_back('A'+i);
+		v2.push_back('B'+ i);
+	}
+	cout << "v1: ";
+	show_sequence< std::vector<char> >(v1);
+	cout << "v2: ";
+	show_sequence< std::vector<char> >(v2);
+	v3.insert(v3.end(), v1.begin(), v1.end());
+	v3.insert(v3.end(), v2.begin(), v2.end());
+	cout << "v3 before inplace_merge: ";
+	show_sequence< std::vector<char> >(v3);
+	inplace_merge(v3.begin(), v3.begin()+(v1.size()), v3.end());
+	cout << "v3 after inplace_merge: ";
+	show_sequence< std::vector<char> >(v3);
+
+	//iter_swap: returns void
+	iter_swap(v3.begin(), v3.end() - 2);
+	cout << "v3 after iter_swap first and before last elements: ";
+	show_sequence< std::vector<char> >(v3);
+
+	//lexicographical_compare: returns true if a first sequence less than a second
+	string first_str = "Hello ";
+	string second_str = "World!";
+	result = lexicographical_compare(first_str.begin(), first_str.end(),\
+							 			second_str.begin(), second_str.end());
+	if(result) cout << "The first_str are less the second_str" << endl;
+
+	//make_heap: returns void
+	//NOTE: to top[i] in a heap: 
+	//							left element == 2*i +1
+	//							right elemet == 2*i +2
+	std::vector<int> vec_to_heap(10, 0);
+	generate_n(vec_to_heap.begin(), 10, my_rand);
+	cout << "vec_to_heap: ";
+	show_sequence< std::vector<char> >(v3);
+	sort(vec_to_heap.begin(), vec_to_heap.end());
+	cout << "vec_to_heap after sort: ";
+	show_sequence< std::vector<int> >(vec_to_heap);
+	make_heap(vec_to_heap.begin(), vec_to_heap.end());
+	cout << "vec_to_heap after make_heap: ";
+	show_sequence< std::vector<int> >(vec_to_heap);
+
 
 	return 0;
 }
