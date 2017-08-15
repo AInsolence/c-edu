@@ -133,10 +133,10 @@ int main(int argc, char const *argv[])
 						upper_bound(my_list.begin(), my_list.end(), 5));
 	if (range_1 == range_2) cout << "We are find range with elements == 5" << endl;
 	cout << "range_1: ";
-	cout << *(range_1.first) << endl;
+	cout << *(range_1.first) << " ";
 	cout << *(range_1.second) << endl;
 	cout << "range_2: ";
-	cout << *(range_2.first) << endl;
+	cout << *(range_2.first) << " ";
 	cout << *(range_2.second) << endl;
 
 	//fill
@@ -242,9 +242,9 @@ int main(int argc, char const *argv[])
 	if(result) cout << "The first_str are less the second_str" << endl;
 
 	//make_heap: returns void
-	//NOTE: to top[i] in a heap: 
-	//							left element == 2*i +1
-	//							right elemet == 2*i +2
+	//NOTE: to top[i] in a heap started with index[0]: 
+	//												  left element index == 2*i +1
+	//												  right elemet index == 2*i +2
 	std::vector<int> vec_to_heap(10, 0);
 	generate_n(vec_to_heap.begin(), 10, my_rand);
 	cout << "vec_to_heap: ";
@@ -256,6 +256,67 @@ int main(int argc, char const *argv[])
 	cout << "vec_to_heap after make_heap: ";
 	show_sequence< std::vector<int> >(vec_to_heap);
 
+	//COMPARE ELEMENTS: max, min, c++11: minmax: returns pair<min, max>
+	int a, b;
+	a = 5;
+	b = 10;
+	cout << "a = 5, b = 10" << endl;
+	cout << "Max element: " << max(a, b) << endl;
+	cout << "Min element: " << min(a, b) << endl;
+	//Here returns element with less iterator (in fact compare iterators!)
+	cout << "Iter: " << *(min(vec_to_heap.begin()+8, vec_to_heap.end()-5)) << endl;
+	//cout << "Min element: " << (minmax(a, b)).first;
+
+	//IN RANGE: min_element, max-element: returns iter to elem. c++11 minmax_element 
+	cout << *(min_element(vec_to_heap.begin(), vec_to_heap.end())) << endl;
+	cout << *(max_element(vec_to_heap.begin(), vec_to_heap.end())) << endl;
+	//cout << *(minmax_element(vec_to_heap.begin(), vec_to_heap.end()));
+
+	//merge: ranges must be sorted
+	std::vector<int> merge_vec;
+	sort(vec_to_heap.begin(), vec_to_heap.end());
+	std::vector<int> vec_to_heap_copy(10, 20);
+	std::vector<int> result_vec(30, 11);
+
+	cout <<"First vector: ";
+	show_sequence< vector<int> >(vec_to_heap);
+	cout <<"Second vector: ";
+	show_sequence< vector<int> >(vec_to_heap_copy);
+	cout <<"Result vector: ";
+	show_sequence< vector<int> >(result_vec);
+	merge(vec_to_heap.begin(), vec_to_heap.end(),\
+			vec_to_heap_copy.begin(), vec_to_heap_copy.end(), result_vec.begin());
+	cout << "Result: ";
+	show_sequence< vector<int> >(result_vec);
+	cout << endl;
+
+	//merge list
+	my_list.sort();
+	std::list<int> sec_list(my_list);
+	std::list<int> res_list(100, 11);
+	cout <<"First list: ";
+	show_sequence< list<int> >(my_list);
+	cout <<"Second list: ";
+	show_sequence< list<int> >(sec_list);
+	cout <<"Result list: ";
+	show_sequence< list<int> >(res_list);
+	merge(my_list.begin(), my_list.end(), sec_list.begin(), sec_list.end(), res_list.begin());
+	cout << "Result: ";
+	show_sequence< list<int> >(res_list);
+
+	//mismatch: returns pair<val1, val2> of mismatches elements in two sequences
+	std::vector<int> vec_to_heap_cc(vec_to_heap_copy);
+	vec_to_heap_copy.insert(vec_to_heap_copy.end(), 66);
+	for (int i = 30; i < 35; i++) vec_to_heap_cc.insert(vec_to_heap_cc.end(), i);
+	show_sequence< vector<int> >(vec_to_heap_cc);
+
+	std::pair<std::vector<int>::iterator, std::vector<int>::iterator> mis_elements;
+	mis_elements = mismatch(vec_to_heap_cc.begin(), vec_to_heap_cc.end(), \
+						vec_to_heap_copy.begin());
+	//NOTE: here is can be the iter == seq.end() if not mismatches before end of seq.
+	cout << "Mismatched elements: " << endl;
+	cout << *(mis_elements.first) << " from vec_to_heap_cc" << endl;
+	cout << *(mis_elements.second) << " from vec_to_heap_copy" << endl;
 
 	return 0;
 }
