@@ -11,7 +11,7 @@
 using namespace std;
 
 namespace{
-	const int SIZE = 3;
+	const int SIZE = 7;
 }
 
 
@@ -128,6 +128,7 @@ int main(int argc, char const *argv[])
 	cout << endl;
 	pair<std::list<int>::iterator, std::list<int>::iterator> range_1, range_2;
 	range_1 = equal_range(my_list.begin(), my_list.end(), 5);
+
 		//lower_bound, upper_bound
 	range_2 = make_pair(lower_bound(my_list.begin(), my_list.end(), 5),\
 						upper_bound(my_list.begin(), my_list.end(), 5));
@@ -317,6 +318,60 @@ int main(int argc, char const *argv[])
 	cout << "Mismatched elements: " << endl;
 	cout << *(mis_elements.first) << " from vec_to_heap_cc" << endl;
 	cout << *(mis_elements.second) << " from vec_to_heap_copy" << endl;
+
+	//nth_element: place only one element to sort position, less elements before &
+	//greater elements after it. Returns void.
+	std::vector<int> random_vec;
+	for(int i = 0; i <= 15; i++){
+		random_vec.push_back(i);
+	}
+	cout << "random_vec before shuffle: ";
+	show_sequence< vector <int> >(random_vec);
+
+		//random_shuffle: mixed elements in random order
+	random_shuffle(random_vec.begin(), random_vec.end());
+	cout << "random_vec after shuffle: ";
+	show_sequence< vector <int> >(random_vec);
+	nth_element(random_vec.begin(),random_vec.begin() + 2 , random_vec.end());
+	cout << "random_vec after nth_element with index 2: ";
+	show_sequence< vector <int> >(random_vec);
+
+	//partial_sort: returns void
+	//partial_sort(first, middle, last)	
+	partial_sort(random_vec.begin(), random_vec.end()-5, random_vec.end());
+	cout << "random_vec after partial_sort to the 10th element: ";
+	show_sequence< vector <int> >(random_vec);
+	random_shuffle(random_vec.begin(), random_vec.end());
+
+	//partial_sort_copy: returns iter to upper_bound element after copied elements
+	std::vector<int> random_vec_copy(random_vec);
+	for(int i = 50; i <= 60; i++){
+		random_vec_copy.push_back(i);
+	}
+	random_shuffle(random_vec_copy.begin(), random_vec_copy.end());
+	cout << "random_vec_copy: ";
+	show_sequence< vector <int> >(random_vec_copy);
+	partial_sort_copy(random_vec.begin(), random_vec.end() - 5, random_vec_copy.begin(),\
+						random_vec_copy.end());
+	cout << "random_vec_copy after partial_sort_copy random_vec[0, -5]: ";
+	show_sequence< vector <int> >(random_vec_copy);
+
+	//partition: all elements with unPred() == true will be before & 
+	// unPred() == false after element. Returns iter to first elem with unPred == false
+	//stable_partition: same as partition, but + the order of the equal elements is saved
+	cout << "random_vec before partition: ";
+	show_sequence< vector <int> >(random_vec);
+	nth_element(random_vec.begin(), random_vec.begin() + SIZE, random_vec.end());
+	partition(random_vec.begin(), random_vec.end(), unPred<int>);
+	cout << "random_vec after partition with unPred: ";
+	show_sequence< vector <int> >(random_vec);
+
+	//is_partitioned: returns true if the sequense partitioned with unPred c++11
+	/*if(is_partitioned(random_vec.begin(), random_vec.end(), unPred<int>)){
+		cout << "random_vec is partitioned with unPred";
+	}*/
+
+	//
 
 	return 0;
 }
