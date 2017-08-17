@@ -38,7 +38,10 @@ void show_sequence(Sequence const& sequence)
 	cout << endl;
     typedef typename Sequence::value_type T;
     //for_each: returns unPred's bool value
-    for_each(sequence.begin(), sequence.end(), show_element<T>); 
+    if(!sequence.empty()){
+    	for_each(sequence.begin(), sequence.end(), show_element<T>);
+    }
+    else cout << "Sequence is empty!";
     cout << endl;
 }
 
@@ -412,21 +415,34 @@ int main(int argc, char const *argv[])
 	cout << "vec_to_heap after sort_heap: ";
 	show_sequence< std::vector<int> >(vec_to_heap);
 
-	//remove, remove_if : returns iter to begin of "garbage"
-	//(NOTE: really remove copied elements to the end of sequence)
+	//remove, remove_if : returns iter to begin of deleted elements or "garbage"
+	//(NOTE: really remove only copied elements to the end of sequence)
 	std::vector<int> rem_vec;
 	for(int i = 0; i < 10; i++) rem_vec.push_back(i);
 	cout << "rem_vec: ";
 	show_sequence< std::vector<int> >(rem_vec);
-	//Use:
+	//Useful variant:
 	remove(rem_vec.begin(), rem_vec.end(), 4);
 	rem_vec.pop_back();
-	cout << "rem_vec before removing 4 + .pop_back(): ";
+	cout << "rem_vec after removing 4 + .pop_back(): ";
 	show_sequence< std::vector<int> >(rem_vec);
-	//Best practice:
+	//!!!Best practice:!!!
 	rem_vec.erase(remove_if(rem_vec.begin(), rem_vec.end(), is_odd), rem_vec.end());
-	cout << "rem_vec before removing + erasing odd elements: ";
+	cout << "rem_vec after removing + erasing odd elements: ";
 	show_sequence< std::vector<int> >(rem_vec);
+
+	//remove_copy
+	std::vector<int> rem_vec2;
+	for(int i = 0; i < 10; i++) rem_vec2.push_back(i);
+	remove_copy(rem_vec.begin(), rem_vec.end()-2, rem_vec2.begin()+2, 10);
+	cout << "rem_vec2 after remove_copy all elements except the last of rem_vec: ";
+	show_sequence< std::vector<int> >(rem_vec2);
+
+	//remove_copy_if
+	std::vector<int> rem_vec3(10, 0);
+	remove_copy_if(rem_vec2.begin(), rem_vec2.end(),rem_vec3.begin(), is_odd);
+	cout << "rem_vec3 after remove_copy_if all even elements from rem_vec2: ";
+	show_sequence< std::vector<int> >(rem_vec3);
 
 	return 0;
 }
