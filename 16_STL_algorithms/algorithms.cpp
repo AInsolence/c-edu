@@ -65,6 +65,19 @@ bool unPred(T const& ob_1)
 	return false;
 }
 
+template<class T>
+bool comparison(const T ob, const T ob_2)
+{
+	if (ob < ob_2) return true;
+	return false;
+}
+
+bool is_odd(int ob)
+{
+	if (ob % 2 == 1) return true;
+	return false;
+}
+
 int main(int argc, char const *argv[])
 {
 	std::vector<int> v(20, 0);
@@ -371,7 +384,49 @@ int main(int argc, char const *argv[])
 		cout << "random_vec is partitioned with unPred";
 	}*/
 
-	//
+	//next_permutation, prev_permutation, returns true if next/previous permutation
+	//lexicographically greater (or used unPred) than previous/next.
+	std::vector<char> perm_vec;
+	for (int i = 0; i < 3; i++){
+		perm_vec.push_back('C' - i);
+	}
+	//random_shuffle(perm_vec.begin(), perm_vec.end());
+
+	do{
+		show_sequence< vector<char> >(perm_vec);
+	}while(prev_permutation(perm_vec.begin(), perm_vec.end()));
+
+	//pop_heap, push_heap, sort_heap: returns void
+	make_heap(vec_to_heap.begin(), vec_to_heap.end());
+	cout << "vec_to_heap: ";
+	show_sequence< std::vector<int> >(vec_to_heap);
+	pop_heap(vec_to_heap.begin(), vec_to_heap.end());
+	vec_to_heap.pop_back();
+	cout << "vec_to_heap after pop-heap & .pop_back(): ";
+	show_sequence< std::vector<int> >(vec_to_heap);
+	vec_to_heap.push_back(120);
+	push_heap(vec_to_heap.begin(), vec_to_heap.end());
+	cout << "vec_to_heap after .push_back(120) & push_heap: ";
+	show_sequence< std::vector<int> >(vec_to_heap);
+	sort_heap(vec_to_heap.begin(), vec_to_heap.end());
+	cout << "vec_to_heap after sort_heap: ";
+	show_sequence< std::vector<int> >(vec_to_heap);
+
+	//remove, remove_if : returns iter to begin of "garbage"
+	//(NOTE: really remove copied elements to the end of sequence)
+	std::vector<int> rem_vec;
+	for(int i = 0; i < 10; i++) rem_vec.push_back(i);
+	cout << "rem_vec: ";
+	show_sequence< std::vector<int> >(rem_vec);
+	//Use:
+	remove(rem_vec.begin(), rem_vec.end(), 4);
+	rem_vec.pop_back();
+	cout << "rem_vec before removing 4 + .pop_back(): ";
+	show_sequence< std::vector<int> >(rem_vec);
+	//Best practice:
+	rem_vec.erase(remove_if(rem_vec.begin(), rem_vec.end(), is_odd), rem_vec.end());
+	cout << "rem_vec before removing + erasing odd elements: ";
+	show_sequence< std::vector<int> >(rem_vec);
 
 	return 0;
 }
