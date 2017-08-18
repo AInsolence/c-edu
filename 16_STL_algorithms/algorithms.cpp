@@ -444,5 +444,90 @@ int main(int argc, char const *argv[])
 	cout << "rem_vec3 after remove_copy_if all even elements from rem_vec2: ";
 	show_sequence< std::vector<int> >(rem_vec3);
 
+	/*NOTE THE MAIN THING ABOUT COPY_IF VS REMOVE_COPY_IF:
+	1. 'Copy_if' - copies items to the sequense EXCEPT of elements with unPred == false;
+	or another words copies all items with unPred == true will be copied;
+	2. 'Remove_copy_if' - copies items to the sequense EXCEPT of 
+	elements with unPred == true;
+	*/
+
+	//replace, replace_if: returns void
+	std::list<int> rep_list1, rep_list2, rep_list3;
+	for(int i = 1; i < 13; i++){
+		rep_list1.push_back(i);
+		rep_list1.push_back(0);
+		rep_list2.push_back(10 + i);
+		rep_list2.push_back(22);
+		rep_list3.push_back(20 + i);
+		rep_list3.push_back(30 + i);
+		rep_list3.push_back(40 + i);
+
+	}
+	cout << "rep_list1: ";
+	show_sequence< list<int> >(rep_list1);
+	replace(rep_list1.begin(), rep_list1.end(), 0, 98);
+	cout << "rep_list1 after replace all items == 0 to 99: ";
+	show_sequence< list<int> >(rep_list1);
+	replace_if(rep_list1.begin(), rep_list1.end(), is_odd, 33);
+	cout << "rep_list1 after replace_if all odd items to 33: ";
+	show_sequence< list<int> >(rep_list1);
+
+	//replace_copy, replace_copy_if: returns iterator to element after last copied tiem
+	//copy elements + replace old to new in copied item's sequence
+	cout << "rep_list2: ";
+	show_sequence< list<int> >(rep_list2);
+	cout << "rep_list3: ";
+	show_sequence< list<int> >(rep_list3);
+	replace_copy(rep_list2.begin(), rep_list2.end(), rep_list3.begin(), 22, 77);
+	cout << "rep_list3 after replace_copy elements of rep_list2 and replace ";
+	cout << "all items == 22 to 77";
+	show_sequence< list<int> >(rep_list3);
+	replace_copy_if(rep_list2.begin(), rep_list2.end(), rep_list2.begin(), is_odd, 0);
+	cout << "rep_list2 after replace_copy_if elements and replace odd items to 0";
+	show_sequence< list<int> >(rep_list2);
+
+	//reverse: returns void, reverse_copy: returns iterator to item after last copied
+	std::vector<char> revers_vec, revers_vec2;
+	for (int i = 0; i < 10; i++){
+		revers_vec.push_back('A' + i);
+		revers_vec2.push_back('D');
+	}
+	cout << "revers_vec:";
+	show_sequence< vector<char> >(revers_vec);
+	reverse(revers_vec.begin(), revers_vec.end());
+	cout << "revers_vec after reverse:";
+	show_sequence< vector<char> >(revers_vec);
+	reverse_copy(revers_vec.begin(), revers_vec.end(), revers_vec2.begin());
+	cout << "revers_vec2 after reverse_copy from revers_vec:";
+	show_sequence< vector<char> >(revers_vec2);
+	reverse(revers_vec2.begin(), revers_vec2.begin() + 6);
+	cout << "revers_vec after reverse first 6 elements:";
+	show_sequence< vector<char> >(revers_vec2);
+
+	//rotate, rotate_copy: returns (first + (last - n_first)) since c++11 before: void
+	std::vector<int> rotate_vec, rotate_vec2(10,0);
+	for(int i = 0; i < 10; i++){
+		rotate_vec.push_back(i);
+	}
+	cout << "rotate_vec:";
+	show_sequence< vector<int> >(rotate_vec);
+	rotate(rotate_vec.begin(), rotate_vec.begin() + 3, rotate_vec.end());
+	cout << "rotate_vec after rotate to 3 items left: ";
+	show_sequence< vector<int> >(rotate_vec);
+	rotate(rotate_vec.rbegin(), rotate_vec.rbegin() + 3, rotate_vec.rend());
+	cout << "rotate_vec after rotate to 3 items right: ";
+	show_sequence< vector<int> >(rotate_vec);
+	rotate_copy(rotate_vec.begin(), rotate_vec.begin() + 5,\
+								 rotate_vec.end(), rotate_vec2.begin());
+	cout << "rotate_vec2 after rotate_copy to 5 items left form rotate_vec: ";
+	show_sequence< vector<int> >(rotate_vec2);
+
+	//search: returns true if element in sequence
+	v_iter = search(rotate_vec2.begin(), rotate_vec2.begin()+5, rotate_vec.begin()+5,\
+						rotate_vec.end());
+	if(v_iter != rotate_vec2.begin()+5){
+		cout << "first part of rotate_vec2 == second part of rotate_vec" << endl;
+	}
+
 	return 0;
 }
