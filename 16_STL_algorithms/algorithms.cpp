@@ -529,5 +529,20 @@ int main(int argc, char const *argv[])
 		cout << "first part of rotate_vec2 == second part of rotate_vec" << endl;
 	}
 
+	//search_n: iterator for the first element of aim sequense, or last
+	for(int i =0; i < 3; i++){
+		rotate_vec2.push_back(1);
+	}
+	v_iter = search_n(rotate_vec2.begin(), rotate_vec2.end(), 3, 1);
+	//(start, end, count, &val)
+	if (v_iter != rotate_vec2.end()) cout << "We find three items == 1 in rotate_vec2: ";
+	cout << *(v_iter) << " " << *(v_iter + 1) << " " << *(v_iter + 2) << endl;
+	v_iter = search_n(rotate_vec2.begin(), rotate_vec2.end(), 3, 4, std::greater<int>());
+	//(start, end, count, &val, biPred)
+	if (v_iter != rotate_vec2.end()){
+		cout << "We find two sequent odd items in rotate_vec2: ";
+	}
+	cout << *(v_iter) << " " << *(v_iter + 1);
+
 	return 0;
 }
