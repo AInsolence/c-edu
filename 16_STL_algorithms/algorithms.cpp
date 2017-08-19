@@ -81,6 +81,11 @@ bool is_odd(int ob)
 	return false;
 }
 
+int biPred(int a, int b)
+{
+	return a*b;
+}
+
 int main(int argc, char const *argv[])
 {
 	std::vector<int> v(20, 0);
@@ -112,7 +117,17 @@ int main(int argc, char const *argv[])
 	copy(v.begin(), v.begin() + 10, v_back_copy.begin() + 10);
 	show_sequence<vector<int> >(v_back_copy);
 	cout << endl;
-	
+
+	//copy_if
+	std::vector<int> copy_vec, copy_vec2;
+	for(int i = 0; i < 10; i++){
+		copy_vec.push_back(i);
+		copy_vec2.push_back(0);
+	}
+	copy_if(copy_vec.begin(), copy_vec.end(), copy_vec2.begin(), is_odd);
+	cout << "copy_vec2: ";
+	show_sequence< vector<int> >(copy_vec2);
+
 	//copy_backward: void - copy start from the last element, but sequence is saved
 	copy_backward(v.begin(), v.begin() + 5, v_back_copy.begin() + 10);
 	show_sequence<vector<int> >(v_back_copy);
@@ -287,7 +302,11 @@ int main(int argc, char const *argv[])
 	//IN RANGE: min_element, max-element: returns iter to elem. c++11 minmax_element 
 	cout << *(min_element(vec_to_heap.begin(), vec_to_heap.end())) << endl;
 	cout << *(max_element(vec_to_heap.begin(), vec_to_heap.end())) << endl;
-	//cout << *(minmax_element(vec_to_heap.begin(), vec_to_heap.end()));
+	auto min_iter = (minmax_element(vec_to_heap.begin(), vec_to_heap.end())).first;
+	auto max_iter = (minmax_element(vec_to_heap.begin(), vec_to_heap.end())).second;
+	cout << "min: " << *min_iter << " & max: ";
+	cout << *max_iter << " from minmax algorithm" << endl;
+
 
 	//merge: ranges must be sorted
 	std::vector<int> merge_vec;
@@ -383,9 +402,9 @@ int main(int argc, char const *argv[])
 	show_sequence< vector <int> >(random_vec);
 
 	//is_partitioned: returns true if the sequense partitioned with unPred c++11
-	/*if(is_partitioned(random_vec.begin(), random_vec.end(), unPred<int>)){
+	if(is_partitioned(random_vec.begin(), random_vec.end(), unPred<int>)){
 		cout << "random_vec is partitioned with unPred";
-	}*/
+	}
 
 	//next_permutation, prev_permutation, returns true if next/previous permutation
 	//lexicographically greater (or used unPred) than previous/next.
@@ -543,6 +562,83 @@ int main(int argc, char const *argv[])
 		cout << "We find two sequent odd items in rotate_vec2: ";
 	}
 	cout << *(v_iter) << " " << *(v_iter + 1);
+
+	//set_difference: returns iterator past the end of the constructed range
+	std::vector<int> sd_vec, sd_vec1, sd_vec_result(10, 0), sd_vec_result2(10,0);
+	sd_vec = {1, 3, 3, 5, 6, 7, 8};
+	sd_vec1 = {1, 2, 2, 3, 4, 5};
+	cout << "sd_vec: ";
+	show_sequence< vector<int> >(sd_vec);
+	cout << "sd_vec1: ";
+	show_sequence< vector<int> >(sd_vec1);
+	cout << "sd_vec_result before any changes: ";
+	show_sequence< vector<int> >(sd_vec_result);
+	set_difference(sd_vec.begin(), sd_vec.end(), sd_vec1.begin(), sd_vec1.end(),\
+					sd_vec_result.begin());
+	cout << "sd_vec_result after set_difference of sd_vec & sd_vec1: ";
+	show_sequence< vector<int> >(sd_vec_result);
+
+	//set_difference: returns iterator past the end of the constructed range
+	set_symmetric_difference(sd_vec.begin(), sd_vec.end(), sd_vec1.begin(),\
+								sd_vec1.end(), sd_vec_result.begin());
+	cout << "sd_vec_result after set_symmetric_difference of sd_vec & sd_vec1: ";
+	show_sequence< vector<int> >(sd_vec_result);
+
+	//set_intersection: iterator past the end of the constructed range
+	set_intersection(sd_vec.begin(), sd_vec.end(), sd_vec1.begin(),\
+								sd_vec1.end(), sd_vec_result2.begin());
+	cout << "sd_vec_result2 after set_intersection of sd_vec & sd_vec1: ";
+	show_sequence< vector<int> >(sd_vec_result2);
+
+	//set_union: iterator past the end of the constructed range
+	std::vector<int> union_vec(20, 0);
+	set_union(sd_vec.begin(), sd_vec.end(), sd_vec1.begin(),\
+								sd_vec1.end(), union_vec.begin());
+	cout << "union_vec after set_union of sd_vec & sd_vec1: ";
+	show_sequence< vector<int> >(union_vec);
+
+	//stable_sort: returns void. Ensure order of the same adjacent items
+	random_shuffle(union_vec.begin(), union_vec.end());
+	cout << "union_vec after random_shuffle: ";
+	show_sequence< vector<int> >(union_vec);
+	stable_sort(union_vec.begin(), union_vec.end());
+	cout << "union_vec after stable_sort: ";
+	show_sequence< vector<int> >(union_vec);
+
+	//swap: returns void
+	swap(union_vec[10], union_vec[11]);
+	cout << "union_vec after swap items [10] & [11]: ";
+	show_sequence< vector<int> >(union_vec);
+
+	//swap_ranges: returns iterator to the item past the last in the aim sequence
+	swap_ranges(union_vec.begin(), union_vec.begin() + 10, union_vec.begin() + 10);
+	cout << "union_vec after swap range [0-10) & [10-end): ";
+	show_sequence< vector<int> >(union_vec);
+
+	//transform: returns iterator past the last transformed
+	std::vector<int> trans_vec0(20, 2);
+	cout << "trans_vec0: ";
+	show_sequence< vector<int> >(trans_vec0);
+	transform(union_vec.begin(), union_vec.end(), trans_vec0.begin(),\
+				[](int a){return a*2;});
+	cout << "trans_vec0 after transform union_vec items*2: ";
+	show_sequence< vector<int> >(trans_vec0);
+
+	//transform biPred version: returns iterator past the last transformed
+	std::vector<int> trans_vec, trans_vec2, trans_vec_res(10, 0);
+	for(int i = 1; i < 11; i++){
+		trans_vec.push_back(i);
+		trans_vec2.push_back(i+1);
+	}
+	cout << "trans_vec: ";
+	show_sequence< vector<int> >(trans_vec);
+	cout << "trans_vec2: ";
+	show_sequence< vector<int> >(trans_vec2);
+	transform(trans_vec.begin(), trans_vec.end(), trans_vec2.begin(),\
+				trans_vec_res.begin(), [](int a, int b){return a*b;});
+	//(first, last, first2, res_seq, biPred(a, b));
+	cout << "trans_vec_res trans_vec*trans_vec2: ";
+	show_sequence< vector<int> >(trans_vec_res);
 
 	return 0;
 }
