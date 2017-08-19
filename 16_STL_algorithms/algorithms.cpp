@@ -640,5 +640,29 @@ int main(int argc, char const *argv[])
 	cout << "trans_vec_res trans_vec*trans_vec2: ";
 	show_sequence< vector<int> >(trans_vec_res);
 
+	//unique: returns iterator to the end of the new range. Sequence must be sorted!!!
+	sort(trans_vec0.begin(), trans_vec0.end());
+	cout << "trans_vec0: ";
+	show_sequence< vector<int> >(trans_vec0);
+	/*trans_vec0.erase(unique(trans_vec0.begin(), trans_vec0.end()), trans_vec0.end());
+	cout << "trans_vec0 after unique function: ";
+	show_sequence< vector<int> >(trans_vec0);*/
+
+	std::list<int> uni_list(20, 0), uni_list2(20, 0), uni_list3(20, 0);
+	copy(trans_vec0.begin(), trans_vec0.end(), uni_list.begin());
+	auto unilist_ptr = unique(uni_list.begin(), uni_list.end());
+	uni_list.erase(unilist_ptr, uni_list.end());
+	show_sequence< list<int> >(uni_list);
+
+	//unique_copy: returns iterator to the end of the new range. Sequence must be sorted!!!
+	copy(trans_vec0.begin(), trans_vec0.end(), uni_list2.begin());
+	cout << "uni_list2: ";
+	show_sequence< list<int> >(uni_list2);
+	cout << "uni_list3: ";
+	show_sequence< list<int> >(uni_list3);
+	unique_copy(uni_list2.begin(), uni_list2.end(), uni_list3.begin());
+	cout << "uni_list3 after unique_copy from uni_list2: ";
+	show_sequence< list<int> >(uni_list3);
+
 	return 0;
 }
