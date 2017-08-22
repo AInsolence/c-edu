@@ -7,53 +7,47 @@
 #include <string>
 #include <algorithm>
 #include <typeinfo>
+#include <cctype>
 
 using namespace std;
 
-namespace{
+namespace {
 	const int SIZE = 7;
 }
 
 
-int my_rand()
-{	
+int my_rand() {
 	static bool flag;
-    if (!flag)
-    {
-        srand(time(NULL));
-        flag = true;
-    }
+	if (!flag) {
+		srand(time(NULL));
+		flag = true;
+	}
 	return rand() % 100 +1;
 }
 
 template<class T>
-void show_element(T const& ob)
-{
+void show_element(T const& ob) {
 	cout << ob << " ";
 }
 
 template<class Sequence>
-void show_sequence(Sequence const& sequence)
-{
+void show_sequence(Sequence const& sequence) {
 	cout << endl;
-    typedef typename Sequence::value_type T;
-    //for_each: returns unPred's bool value
-    if(!sequence.empty()){
-    	for_each(sequence.begin(), sequence.end(), show_element<T>);
-    }
-    else cout << "Sequence is empty!";
-    cout << endl;
+	typedef typename Sequence::value_type T;
+	//for_each: returns unPred's bool value
+	if(!sequence.empty()) {
+		for_each(sequence.begin(), sequence.end(), show_element<T>);
+	} else cout << "Sequence is empty!";
+	cout << endl;
 }
 
 template<typename K, typename V>
-void show_c_element(pair <K, V> element)
-{
+void show_c_element(pair <K, V> element) {
 	cout << element.first << " - " << element.second << endl;
 }
 
 template<typename AC>
-void show_associative_con(AC const& container)
-{
+void show_associative_con(AC const& container) {
 	cout << endl;
 	typedef typename AC::mapped_type V;
 	typedef typename AC::key_type K;
@@ -62,56 +56,57 @@ void show_associative_con(AC const& container)
 }
 
 template<typename T>
-bool unPred(T const& ob_1)
-{
+bool unPred(T const& ob_1) {
 	if (ob_1 < SIZE) return true;
 	return false;
 }
 
 template<class T>
-bool comparison(const T ob, const T ob_2)
-{
+bool comparison(const T ob, const T ob_2) {
 	if (ob < ob_2) return true;
 	return false;
 }
 
-bool is_odd(int ob)
-{
+bool is_odd(int ob) {
 	if (ob % 2 == 1) return true;
 	return false;
 }
 
-int biPred(int a, int b)
-{
+int biPred(int a, int b) {
 	return a*b;
 }
 
-int main(int argc, char const *argv[])
+template<typename T>
+bool is_number(T ob)
 {
+	return typeid(ob) == typeid(int) ? true : false;
+}
+
+int main(int argc, char const *argv[]) {
 	std::vector<int> v(20, 0);
 	show_sequence< std::vector<int> >(v);
-	
+
 	//generate: void
 	generate(v.begin(), v.end(), my_rand);//here I using my own function to
-										  //get random number
+	//get random number
 	show_sequence< std::vector<int> >(v);
 	int new_number = v[10];
 	v.push_back(new_number);
 	cout << endl << new_number << endl;
-	
+
 	//sort: void
 	sort(v.begin(), v.end());
 	show_sequence< std::vector<int> >(v);
-	
+
 	//adjacent_find: returns an iterator to the first element of adjacent elements
 	std::vector<int>::iterator v_iter;
 	v_iter = adjacent_find(v.begin(), v.end());
 	if (*v_iter = 53) cout << "Element " << new_number << " is finded!" << endl;
-	
+
 	//binary_search: returns bool
 	if(binary_search(v.begin(), v.end(), 53)) cout << "true" << endl;
 	else cout << "false" << endl;
-	
+
 	//copy: void
 	std::vector<int> v_back_copy(30);
 	copy(v.begin(), v.begin() + 10, v_back_copy.begin() + 10);
@@ -120,7 +115,7 @@ int main(int argc, char const *argv[])
 
 	//copy_if
 	std::vector<int> copy_vec, copy_vec2;
-	for(int i = 0; i < 10; i++){
+	for(int i = 0; i < 10; i++) {
 		copy_vec.push_back(i);
 		copy_vec2.push_back(0);
 	}
@@ -132,25 +127,25 @@ int main(int argc, char const *argv[])
 	copy_backward(v.begin(), v.begin() + 5, v_back_copy.begin() + 10);
 	show_sequence<vector<int> >(v_back_copy);
 	cout << endl;
-	
+
 	//count: returns number of elements == value
 	cout << "Number of 0: " << count(v_back_copy.begin(), v_back_copy.end(), 0);
-	
+
 	//count_if: returns number of unPred(element) == true
 	cout << "Number of elements < " << SIZE << ": ";
 	cout << count_if(v_back_copy.begin(), v_back_copy.end(), unPred<int>) << endl;
-	
+
 	//equal: return bool, compare two sequences
 	std::vector<int> v_back_copy_2(v_back_copy);
 	bool result = equal(v_back_copy.begin(), v_back_copy.end(),\
-		 				v_back_copy_2.begin());
+	                    v_back_copy_2.begin());
 	if (result) cout << "v_back_copy and v_back_copy_2 is equal" << endl;
 	result = equal(v_back_copy.begin(), v_back_copy.end(), v.begin());
 	if (!result) cout << "v_back_copy and v is not equal" << endl;
 	std::list<int> my_list(v.begin(), v.end());
 	if(equal(v.begin(), v.end(), my_list.begin())) cout << "v and my_list is equal";
 	cout << endl;
-	
+
 	//equal_range: return pair<iter, iter> for range of elements == val
 	for(register int i = 0; i < 5; i++) my_list.push_back(5);
 	my_list.push_back(100);
@@ -160,9 +155,9 @@ int main(int argc, char const *argv[])
 	pair<std::list<int>::iterator, std::list<int>::iterator> range_1, range_2;
 	range_1 = equal_range(my_list.begin(), my_list.end(), 5);
 
-		//lower_bound, upper_bound
+	//lower_bound, upper_bound
 	range_2 = make_pair(lower_bound(my_list.begin(), my_list.end(), 5),\
-						upper_bound(my_list.begin(), my_list.end(), 5));
+	                    upper_bound(my_list.begin(), my_list.end(), 5));
 	if (range_1 == range_2) cout << "We are find range with elements == 5" << endl;
 	cout << "range_1: ";
 	cout << *(range_1.first) << " ";
@@ -195,7 +190,7 @@ int main(int argc, char const *argv[])
 	//find_end: returns iterator to the first element
 	//in the last appearence of the seq_2 in the seq_1
 	std::vector<int> v_back_copy_3;
-	for(int i = 4; i ; i--){
+	for(int i = 4; i ; i--) {
 		my_list.push_back(5-i);
 		my_list.push_front(i);
 		v_back_copy_3.push_back(5-i);
@@ -207,7 +202,7 @@ int main(int argc, char const *argv[])
 
 	std::list<int>::iterator lst_iter;
 	lst_iter = find_end(my_list.begin(), my_list.end(),\
-						v_back_copy_3.begin(), v_back_copy_3.end());
+	                    v_back_copy_3.begin(), v_back_copy_3.end());
 
 	//distance: returns number of elements betwee two iterators
 	cout << distance(v_back_copy.begin(), v_iter);
@@ -218,12 +213,11 @@ int main(int argc, char const *argv[])
 	//find_first_of: returns iterator to the first element
 	//in the first appearence of the seq_2 in the seq_1
 	lst_iter = find_first_of(my_list.begin(), my_list.end(),\
-						v_back_copy_3.begin(), v_back_copy_3.end());
+	                         v_back_copy_3.begin(), v_back_copy_3.end());
 	cout << "First position of the v_back_copy_3 in the my_list is: ";
 	cout << distance(my_list.begin(), lst_iter) << endl;
 
 	//find_if: returns iterator to the firs element
-	//!NOTE: find_if_not doesn't work! This is a question why?
 	lst_iter = find_if(my_list.begin(), my_list.end(), unPred<int>);
 	cout << "Position of the first element in the my_list == " << SIZE << ": ";
 	cout << distance(my_list.begin(), lst_iter) << endl;
@@ -237,15 +231,15 @@ int main(int argc, char const *argv[])
 
 	//includes: returns true if the range elements of the seq_2 is in the seq_1
 	if(includes(my_list.begin(), my_list.end(),\
-			 v_back_copy_3.begin(), v_back_copy_3.end()-2)){
+	            v_back_copy_3.begin(), v_back_copy_3.end()-2)) {
 		cout << \
-		"my_list contains  elements from begin to end - 2 of v_back_copy_3" << endl;
+		     "my_list contains  elements from begin to end - 2 of v_back_copy_3" << endl;
 	}
 
 	//inplace_merge: merges and sorts two sorted parts of one sequence
 	//NOTE: faster than sort/stable_sort for the same case
 	std::vector<char> v1, v2, v3;
-	for(int i = 0; i < 10; i += 2){
+	for(int i = 0; i < 10; i += 2) {
 		v1.push_back('A'+i);
 		v2.push_back('B'+ i);
 	}
@@ -270,11 +264,11 @@ int main(int argc, char const *argv[])
 	string first_str = "Hello ";
 	string second_str = "World!";
 	result = lexicographical_compare(first_str.begin(), first_str.end(),\
-							 			second_str.begin(), second_str.end());
+	                                 second_str.begin(), second_str.end());
 	if(result) cout << "The first_str are less the second_str" << endl;
 
 	//make_heap: returns void
-	//NOTE: to top[i] in a heap started with index[0]: 
+	//NOTE: to top[i] in a heap started with index[0]:
 	//												  left element index == 2*i +1
 	//												  right elemet index == 2*i +2
 	std::vector<int> vec_to_heap(10, 0);
@@ -299,7 +293,7 @@ int main(int argc, char const *argv[])
 	cout << "Iter: " << *(min(vec_to_heap.begin()+8, vec_to_heap.end()-5)) << endl;
 	//cout << "Min element: " << (minmax(a, b)).first;
 
-	//IN RANGE: min_element, max-element: returns iter to elem. c++11 minmax_element 
+	//IN RANGE: min_element, max-element: returns iter to elem. c++11 minmax_element
 	cout << *(min_element(vec_to_heap.begin(), vec_to_heap.end())) << endl;
 	cout << *(max_element(vec_to_heap.begin(), vec_to_heap.end())) << endl;
 	auto min_iter = (minmax_element(vec_to_heap.begin(), vec_to_heap.end())).first;
@@ -321,7 +315,7 @@ int main(int argc, char const *argv[])
 	cout <<"Result vector: ";
 	show_sequence< vector<int> >(result_vec);
 	merge(vec_to_heap.begin(), vec_to_heap.end(),\
-			vec_to_heap_copy.begin(), vec_to_heap_copy.end(), result_vec.begin());
+	      vec_to_heap_copy.begin(), vec_to_heap_copy.end(), result_vec.begin());
 	cout << "Result: ";
 	show_sequence< vector<int> >(result_vec);
 	cout << endl;
@@ -348,7 +342,7 @@ int main(int argc, char const *argv[])
 
 	std::pair<std::vector<int>::iterator, std::vector<int>::iterator> mis_elements;
 	mis_elements = mismatch(vec_to_heap_cc.begin(), vec_to_heap_cc.end(), \
-						vec_to_heap_copy.begin());
+	                        vec_to_heap_copy.begin());
 	//NOTE: here is can be the iter == seq.end() if not mismatches before end of seq.
 	cout << "Mismatched elements: " << endl;
 	cout << *(mis_elements.first) << " from vec_to_heap_cc" << endl;
@@ -357,13 +351,13 @@ int main(int argc, char const *argv[])
 	//nth_element: place only one element to sort position, less elements before &
 	//greater elements after it. Returns void.
 	std::vector<int> random_vec;
-	for(int i = 0; i <= 15; i++){
+	for(int i = 0; i <= 15; i++) {
 		random_vec.push_back(i);
 	}
 	cout << "random_vec before shuffle: ";
 	show_sequence< vector <int> >(random_vec);
 
-		//random_shuffle: mixed elements in random order
+	//random_shuffle: mixed elements in random order
 	random_shuffle(random_vec.begin(), random_vec.end());
 	cout << "random_vec after shuffle: ";
 	show_sequence< vector <int> >(random_vec);
@@ -372,7 +366,7 @@ int main(int argc, char const *argv[])
 	show_sequence< vector <int> >(random_vec);
 
 	//partial_sort: returns void
-	//partial_sort(first, middle, last)	
+	//partial_sort(first, middle, last)
 	partial_sort(random_vec.begin(), random_vec.end()-5, random_vec.end());
 	cout << "random_vec after partial_sort to the 10th element: ";
 	show_sequence< vector <int> >(random_vec);
@@ -380,18 +374,18 @@ int main(int argc, char const *argv[])
 
 	//partial_sort_copy: returns iter to upper_bound element after copied elements
 	std::vector<int> random_vec_copy(random_vec);
-	for(int i = 50; i <= 60; i++){
+	for(int i = 50; i <= 60; i++) {
 		random_vec_copy.push_back(i);
 	}
 	random_shuffle(random_vec_copy.begin(), random_vec_copy.end());
 	cout << "random_vec_copy: ";
 	show_sequence< vector <int> >(random_vec_copy);
 	partial_sort_copy(random_vec.begin(), random_vec.end() - 5, random_vec_copy.begin(),\
-						random_vec_copy.end());
+	                  random_vec_copy.end());
 	cout << "random_vec_copy after partial_sort_copy random_vec[0, -5]: ";
 	show_sequence< vector <int> >(random_vec_copy);
 
-	//partition: all elements with unPred() == true will be before & 
+	//partition: all elements with unPred() == true will be before &
 	// unPred() == false after element. Returns iter to first elem with unPred == false
 	//stable_partition: same as partition, but + the order of the equal elements is saved
 	cout << "random_vec before partition: ";
@@ -402,21 +396,21 @@ int main(int argc, char const *argv[])
 	show_sequence< vector <int> >(random_vec);
 
 	//is_partitioned: returns true if the sequense partitioned with unPred c++11
-	if(is_partitioned(random_vec.begin(), random_vec.end(), unPred<int>)){
+	if(is_partitioned(random_vec.begin(), random_vec.end(), unPred<int>)) {
 		cout << "random_vec is partitioned with unPred";
 	}
 
 	//next_permutation, prev_permutation, returns true if next/previous permutation
 	//lexicographically greater (or used unPred) than previous/next.
 	std::vector<char> perm_vec;
-	for (int i = 0; i < 3; i++){
+	for (int i = 0; i < 3; i++) {
 		perm_vec.push_back('C' - i);
 	}
 	//random_shuffle(perm_vec.begin(), perm_vec.end());
 
-	do{
+	do {
 		show_sequence< vector<char> >(perm_vec);
-	}while(prev_permutation(perm_vec.begin(), perm_vec.end()));
+	} while(prev_permutation(perm_vec.begin(), perm_vec.end()));
 
 	//pop_heap, push_heap, sort_heap: returns void
 	make_heap(vec_to_heap.begin(), vec_to_heap.end());
@@ -466,13 +460,13 @@ int main(int argc, char const *argv[])
 	/*NOTE THE MAIN THING ABOUT COPY_IF VS REMOVE_COPY_IF:
 	1. 'Copy_if' - copies items to the sequense EXCEPT of elements with unPred == false;
 	or another words copies all items with unPred == true will be copied;
-	2. 'Remove_copy_if' - copies items to the sequense EXCEPT of 
+	2. 'Remove_copy_if' - copies items to the sequense EXCEPT of
 	elements with unPred == true;
 	*/
 
 	//replace, replace_if: returns void
 	std::list<int> rep_list1, rep_list2, rep_list3;
-	for(int i = 1; i < 13; i++){
+	for(int i = 1; i < 13; i++) {
 		rep_list1.push_back(i);
 		rep_list1.push_back(0);
 		rep_list2.push_back(10 + i);
@@ -507,7 +501,7 @@ int main(int argc, char const *argv[])
 
 	//reverse: returns void, reverse_copy: returns iterator to item after last copied
 	std::vector<char> revers_vec, revers_vec2;
-	for (int i = 0; i < 10; i++){
+	for (int i = 0; i < 10; i++) {
 		revers_vec.push_back('A' + i);
 		revers_vec2.push_back('D');
 	}
@@ -525,7 +519,7 @@ int main(int argc, char const *argv[])
 
 	//rotate, rotate_copy: returns (first + (last - n_first)) since c++11 before: void
 	std::vector<int> rotate_vec, rotate_vec2(10,0);
-	for(int i = 0; i < 10; i++){
+	for(int i = 0; i < 10; i++) {
 		rotate_vec.push_back(i);
 	}
 	cout << "rotate_vec:";
@@ -537,19 +531,19 @@ int main(int argc, char const *argv[])
 	cout << "rotate_vec after rotate to 3 items right: ";
 	show_sequence< vector<int> >(rotate_vec);
 	rotate_copy(rotate_vec.begin(), rotate_vec.begin() + 5,\
-								 rotate_vec.end(), rotate_vec2.begin());
+	            rotate_vec.end(), rotate_vec2.begin());
 	cout << "rotate_vec2 after rotate_copy to 5 items left form rotate_vec: ";
 	show_sequence< vector<int> >(rotate_vec2);
 
 	//search: returns true if element in sequence
 	v_iter = search(rotate_vec2.begin(), rotate_vec2.begin()+5, rotate_vec.begin()+5,\
-						rotate_vec.end());
-	if(v_iter != rotate_vec2.begin()+5){
+	                rotate_vec.end());
+	if(v_iter != rotate_vec2.begin()+5) {
 		cout << "first part of rotate_vec2 == second part of rotate_vec" << endl;
 	}
 
 	//search_n: iterator for the first element of aim sequense, or last
-	for(int i =0; i < 3; i++){
+	for(int i =0; i < 3; i++) {
 		rotate_vec2.push_back(1);
 	}
 	v_iter = search_n(rotate_vec2.begin(), rotate_vec2.end(), 3, 1);
@@ -558,7 +552,7 @@ int main(int argc, char const *argv[])
 	cout << *(v_iter) << " " << *(v_iter + 1) << " " << *(v_iter + 2) << endl;
 	v_iter = search_n(rotate_vec2.begin(), rotate_vec2.end(), 3, 4, std::greater<int>());
 	//(start, end, count, &val, biPred)
-	if (v_iter != rotate_vec2.end()){
+	if (v_iter != rotate_vec2.end()) {
 		cout << "We find two sequent odd items in rotate_vec2: ";
 	}
 	cout << *(v_iter) << " " << *(v_iter + 1);
@@ -574,26 +568,26 @@ int main(int argc, char const *argv[])
 	cout << "sd_vec_result before any changes: ";
 	show_sequence< vector<int> >(sd_vec_result);
 	set_difference(sd_vec.begin(), sd_vec.end(), sd_vec1.begin(), sd_vec1.end(),\
-					sd_vec_result.begin());
+	               sd_vec_result.begin());
 	cout << "sd_vec_result after set_difference of sd_vec & sd_vec1: ";
 	show_sequence< vector<int> >(sd_vec_result);
 
 	//set_difference: returns iterator past the end of the constructed range
 	set_symmetric_difference(sd_vec.begin(), sd_vec.end(), sd_vec1.begin(),\
-								sd_vec1.end(), sd_vec_result.begin());
+	                         sd_vec1.end(), sd_vec_result.begin());
 	cout << "sd_vec_result after set_symmetric_difference of sd_vec & sd_vec1: ";
 	show_sequence< vector<int> >(sd_vec_result);
 
 	//set_intersection: iterator past the end of the constructed range
 	set_intersection(sd_vec.begin(), sd_vec.end(), sd_vec1.begin(),\
-								sd_vec1.end(), sd_vec_result2.begin());
+	                 sd_vec1.end(), sd_vec_result2.begin());
 	cout << "sd_vec_result2 after set_intersection of sd_vec & sd_vec1: ";
 	show_sequence< vector<int> >(sd_vec_result2);
 
 	//set_union: iterator past the end of the constructed range
 	std::vector<int> union_vec(20, 0);
 	set_union(sd_vec.begin(), sd_vec.end(), sd_vec1.begin(),\
-								sd_vec1.end(), union_vec.begin());
+	          sd_vec1.end(), union_vec.begin());
 	cout << "union_vec after set_union of sd_vec & sd_vec1: ";
 	show_sequence< vector<int> >(union_vec);
 
@@ -620,13 +614,15 @@ int main(int argc, char const *argv[])
 	cout << "trans_vec0: ";
 	show_sequence< vector<int> >(trans_vec0);
 	transform(union_vec.begin(), union_vec.end(), trans_vec0.begin(),\
-				[](int a){return a*2;});
+	[](int a) {
+		return a*2;
+	});
 	cout << "trans_vec0 after transform union_vec items*2: ";
 	show_sequence< vector<int> >(trans_vec0);
 
 	//transform biPred version: returns iterator past the last transformed
 	std::vector<int> trans_vec, trans_vec2, trans_vec_res(10, 0);
-	for(int i = 1; i < 11; i++){
+	for(int i = 1; i < 11; i++) {
 		trans_vec.push_back(i);
 		trans_vec2.push_back(i+1);
 	}
@@ -635,7 +631,9 @@ int main(int argc, char const *argv[])
 	cout << "trans_vec2: ";
 	show_sequence< vector<int> >(trans_vec2);
 	transform(trans_vec.begin(), trans_vec.end(), trans_vec2.begin(),\
-				trans_vec_res.begin(), [](int a, int b){return a*b;});
+	trans_vec_res.begin(), [](int a, int b) {
+		return a*b;
+	});
 	//(first, last, first2, res_seq, biPred(a, b));
 	cout << "trans_vec_res trans_vec*trans_vec2: ";
 	show_sequence< vector<int> >(trans_vec_res);
@@ -654,7 +652,8 @@ int main(int argc, char const *argv[])
 	uni_list.erase(unilist_ptr, uni_list.end());
 	show_sequence< list<int> >(uni_list);
 
-	//unique_copy: returns iterator to the end of the new range. Sequence must be sorted!!!
+	//unique_copy: returns iterator to the end of the new range.
+	//Sequence must be sorted!!!
 	copy(trans_vec0.begin(), trans_vec0.end(), uni_list2.begin());
 	cout << "uni_list2: ";
 	show_sequence< list<int> >(uni_list2);
@@ -663,6 +662,25 @@ int main(int argc, char const *argv[])
 	unique_copy(uni_list2.begin(), uni_list2.end(), uni_list3.begin());
 	cout << "uni_list3 after unique_copy from uni_list2: ";
 	show_sequence< list<int> >(uni_list3);
+
+	//C++ 11 new algorithms
+
+	//all_of, any_of, none_of: returns bool
+	result = all_of(uni_list.begin(), uni_list.end(), is_number<int>);
+	if (result) cout << "All items in uni_list are numbers!" << endl;
+
+	result = any_of(union_vec.begin(), union_vec.end(), is_odd);
+	if (result) cout << "Some items in union_vec are odd numbers!" << endl;
+
+	result = none_of(uni_list.begin(), uni_list.end(),\
+					 [](int a){if(a > 1000) return true; return false;});
+	if (result) cout << "None of items in uni_list are greater than 1000!" << endl;
+
+	//find_if_not
+	v_iter = find_if_not(trans_vec0.begin(), trans_vec0.end(),\
+							[](int x){return x <= 6 ? true : false;});
+	cout << "First item is not less or equal than 6 in trans_vec0 is: " << *v_iter;
+	cout << endl;
 
 	return 0;
 }
