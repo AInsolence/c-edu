@@ -6,6 +6,8 @@
 #include <set>
 #include <string>
 #include <algorithm>
+#include <iterator>
+#include <numeric>
 #include <typeinfo>
 #include <cctype>
 
@@ -680,6 +682,65 @@ int main(int argc, char const *argv[]) {
 	v_iter = find_if_not(trans_vec0.begin(), trans_vec0.end(),\
 							[](int x){return x <= 6 ? true : false;});
 	cout << "First item is not less or equal than 6 in trans_vec0 is: " << *v_iter;
+	cout << endl;
+
+	//copy_n: returns iterator past the last copied if count > 0, else first
+	std::vector<int> cn_vec(10, 0);
+	copy_n(uni_list3.begin(), 4, cn_vec.begin());
+	cout << "cn_vec after copy_n 4 elements from uni_list3: ";
+	show_sequence< vector<int> >(cn_vec);
+
+	//move: returns an iterator to the last item in the aim sequence
+	move(uni_list3.begin(), uni_list3.end(), std::back_inserter(cn_vec));
+	cout << "cn_vec after add uni_list3 to the end with back_inserter(v): ";
+	show_sequence< vector<int> >(cn_vec);
+
+	//partition_point: returns an iterator to the last element in the first part
+	//of the partitioned range
+	//NOTE: range MUST be partitioned!!!
+	std::vector<int> pp_vec{1, 2, 3, 4, 5, 6, 7, 8, 9};
+	partition(pp_vec.begin(), pp_vec.end(), is_odd);
+	auto pp_iter = partition_point(pp_vec.begin(), pp_vec.end(), is_odd);
+	std::copy(pp_vec.begin(), pp_iter, ostream_iterator<int>(std::cout, " "));
+	cout << endl;
+	std::copy(pp_iter, pp_vec.end(), ostream_iterator<int>(std::cout, " "));
+
+	//is_sorted: returns true if sequence is sorted
+	sort(pp_vec.begin(), pp_vec.end());
+	result = is_sorted(pp_vec.begin(), pp_vec.end());
+	if(result){
+		cout << endl << "pp_vec is_soted: ";
+		show_sequence< vector<int> >(pp_vec);
+	}
+
+	//is_sorted_until: returns iterator upper_bound to sorted part of range
+	pp_vec.emplace_back(1);
+	pp_vec.emplace_back(7);
+	auto iss_iter = is_sorted_until(pp_vec.begin(), pp_vec.end());
+	if(result){
+		cout << "last sorted element: " << *(iss_iter - 1);
+		show_sequence< vector<int> >(pp_vec);
+	}
+
+	//is_permutation: returns true if aim range is permutation of the init range
+	std::vector<int> isp_vec;
+	rotate_copy(pp_vec.begin(), pp_vec.begin() + 3, pp_vec.end(),\
+													std::back_inserter(isp_vec));
+	result = is_permutation(pp_vec.begin(), pp_vec.end(),\
+									isp_vec.begin(), isp_vec.end());
+	if(result){
+		cout << "isp_vec: ";
+		show_sequence< vector<int> >(isp_vec);
+		cout << "is a permutation of pp_vec: ";
+		show_sequence< vector<int> >(pp_vec);
+	}
+
+	//iota: returns void
+	//NOTE: REQUIRE #include <numeric>
+	std::vector<int> iota_vec(10, 0);
+	std::iota(iota_vec.begin(), iota_vec.end(), -5);
+	cout << "iota_vec is filled with algorithm iota with start parameter == -5: ";
+	copy(iota_vec.begin(), iota_vec.end(), ostream_iterator<int>(cout, ", "));
 	cout << endl;
 
 	return 0;
