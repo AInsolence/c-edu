@@ -28,6 +28,8 @@ int main(int argc, char const *argv[])
 	copy_if(full_name.begin(), full_name.end(),\
 			std::ostream_iterator<char>(std::cout),\
 				[](char ob){return ob != 'X';});
+	auto s_name_index = full_name.rfind("Insolence");
+	std::cout << std::endl << full_name.substr(s_name_index) << std::endl;
 
 	return 0;
 }
